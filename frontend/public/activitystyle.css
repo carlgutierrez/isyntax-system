@@ -1,0 +1,50 @@
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+body{
+  font-family: Ubuntu;
+}
+
+/* BODY */
+.bts{
+  border-radius: 50px;
+
+}
+
+.hgtMain{
+  height: 90vh;
+}
+/* NAVBAR */
+.image {
+  vertical-align: middle;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+}
+
+/* CARDS EFFECT */
+.cards:hover{
+  transform: scale(1.1);
+  transition: all linear 200ms;
+  z-index: 1;
+  border-radius: 5px;
+  box-shadow: 1px 1px 10px rgba(0, 81, 255, 0.9);
+  cursor: pointer;
+}
+/* Image */
+#dashboard{
+  position: relative;
+}
+/* #dashboard{
+  position: absolute;
+} */
+.bottomleft{
+    position: absolute;
+    top: 100%;
+    left: 16px;
+}
+.images{
+  width: 63%;
+}

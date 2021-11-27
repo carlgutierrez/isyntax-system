@@ -1,0 +1,97 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:&display=swap');
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Ubuntu', sans-serif;
+  /* font-family: Ubuntu; */
+}
+/* LP Main Section */
+.hgtMain {
+  height: 100vh;
+}
+
+/* LP Improve Section */
+.card {
+  height: 100%px;
+}
+
+.img img {
+  margin-left: 30%;
+}
+
+.cards:hover {
+  transform: scale(1.1);
+  transition: all linear 400ms;
+  z-index: 1;
+  border-radius: 5px;
+  box-shadow: 1px 1px 10px rgba(255, 255, 255, 0.9);
+}
+
+/* LP Contact Section */
+.inputs {
+  border: 2px solid;
+}
+.inputs:focus {
+  border-color: #0d6efd;
+  box-shadow: 2px 2px 10px rgba(255, 255, 255, 0.9);
+}
+
+/* Footer */
+.footers {
+  background-color: #030303;
+  margin-top: 80px;
+}
+
+/* ScrollToTop Component */
+.scrollToTop {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 14px;
+  line-height: 1.5715;
+  list-style: none;
+  position: fixed;
+  right: 100px;
+  bottom: 50px;
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+
+  @media screen and (max-width: 1024px) {
+    display: none;
+  }
+}
+
+/* Center Container */
+.containerCenter {
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Image */
+#dashboard {
+  position: relative;
+}
+.bottomleft {
+  position: absolute;
+  top: 100%;
+  left: 16px;
+}
+.images {
+  width: 63%;
+}
+
+/* SVG Background */
+.svgBG {
+  /* background: url(images/coder.svg); */
+}
