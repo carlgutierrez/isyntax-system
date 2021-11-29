@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test MD</title>
+  </head>
+  <body>
+    <h1>Aizu Online Judge Code Scraper</h1>
+    <p>
+      A JavaScript based scraper used to get code submissions using
+      <a href="http://developers.u-aizu.ac.jp/index">Aizu Online Judge API</a>
+    </p>
+    <h2>Usage</h2>
+    <p>
+      change the <code>problemId</code>, <code>language</code> and
+      <code>submissionSize</code> in <a href="./index.js">index.js</a>
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Variable</th>
+          <th style="text-align: center">Type</th>
+          <th style="text-align: center">Required</th>
+          <th style="text-align: center">Description</th>
+          <th style="text-align: center">Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>problemId</td>
+          <td style="text-align: center">string</td>
+          <td style="text-align: center">true</td>
+          <td style="text-align: center">
+            Problem ID from
+            <a href="https://onlinejudge.u-aizu.ac.jp/courses/list"
+              >Aizu Online Judge Courses</a
+            >
+          </td>
+          <td style="text-align: center"><code>ITP1_2_C</code></td>
+        </tr>
+        <tr>
+          <td>language</td>
+          <td style="text-align: center">string</td>
+          <td style="text-align: center">true</td>
+          <td style="text-align: center">Programming language of submission</td>
+          <td style="text-align: center"><code>Python3</code></td>
+        </tr>
+        <tr>
+          <td>submissionSize</td>
+          <td style="text-align: center">number</td>
+          <td style="text-align: center">true</td>
+          <td style="text-align: center">
+            The size of the submission list request, can be greater than the
+            total number of submissions.
+          </td>
+          <td style="text-align: center"><code>500</code></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>to run code type in terminal</p>
+    <pre><code class="language-console">$ npm install
+$ node index.js
+</code></pre>
+    <h2>Output</h2>
+    <p>list of codes will be save on <a href="./codes.tsv">codes.tsv</a></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>judgeId</td>
+          <td>number</td>
+          <td>source code submission ID</td>
+        </tr>
+        <tr>
+          <td>code</td>
+          <td>string</td>
+          <td>stringified source code</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

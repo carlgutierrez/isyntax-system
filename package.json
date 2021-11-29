@@ -23,6 +23,7 @@
     "express": "^4.17.1",
     "express-openid-connect": "^2.5.1",
     "joi": "^17.4.2",
+    "markdown-it": "^12.2.0",
     "mongoose": "^6.0.13"
   }
 }

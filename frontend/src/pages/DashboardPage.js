@@ -76,7 +76,7 @@ function DashboardPage() {
         isDropdown={true}
       />
 
-      <Container className='mt-5'>
+      <Container className='mt-sm-1 mt-lg-5'>
         <CardGroup>
           <Row xs={1} md={3} className='g-4'>
             {activities.map((activity, index) => (
