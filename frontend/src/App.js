@@ -4,15 +4,16 @@ import ProfilePage from './pages/ProfilePage';
 import ActivityPage from './pages/ActivityPage';
 import NotFound from './pages/NotFound';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import { useGlobalContext } from './context';
+import NavBar from './components/NavBar';
+import ProtectedRoute from './auth/protected-route';
 
 function App() {
-  const { selectedActivities } = useGlobalContext();
   return (
     <>
+      <NavBar />
       <Switch>
         <Route exact path='/' component={LandingPage} />
-        <Route exact path='/dashboard' component={DashboardPage} />
+        <ProtectedRoute exact path='/dashboard' component={DashboardPage} />
         <Route exact path='/activity/:_id' component={ActivityPage} />
         {/* <Route exact path='/leaderboard' component={Leaderboard} /> */}
         <Route exact path='/profile/:username' component={ProfilePage} />

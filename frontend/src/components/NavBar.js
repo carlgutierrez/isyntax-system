@@ -1,20 +1,44 @@
 import React from 'react';
-import {
-  Container,
-  Navbar,
-  Nav,
-  Button,
-  NavDropdown,
-  Image,
-} from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { BsCodeSlash } from 'react-icons/bs';
+import { Container, Navbar, Nav, Image } from 'react-bootstrap';
+import { Link, NavLink, useLocation } from 'react-router-dom';
+import AuthNav from './AuthNav';
+import { useAuth0 } from '@auth0/auth0-react';
 
-const capitalizeFirstLetter = string => {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-};
+const dashboardlinks = [
+  {
+    label: 'Dashboard',
+    link: '/dashboard',
+  },
+  {
+    label: 'Leaderboard',
+    link: '/leaderboard',
+  },
+];
 
-function NavBar({ links, btnLabel, avatar, username, isDropdown }) {
+const landingLinks = [
+  {
+    label: 'About',
+    link: '#about',
+  },
+  {
+    label: 'Mission',
+    link: '#mission',
+  },
+  {
+    label: 'Contact',
+    link: '#contact',
+  },
+];
+
+const avatar =
+  'https://lh3.googleusercontent.com/a-/AOh14GhqrK09oIp3AFwDy1cxcjfFLpNzabyvrvcIvuchMg=s96-c';
+
+const username = 'ronnel';
+
+function NavBar() {
+  const { isLoading } = useAuth0();
+  const { pathname } = useLocation();
+  const links = pathname === '/' ? landingLinks : dashboardlinks;
   return (
     <Navbar
       collapseOnSelect
@@ -25,73 +49,58 @@ function NavBar({ links, btnLabel, avatar, username, isDropdown }) {
     >
       <Container>
         <Navbar.Brand href='/' className='text-primary'>
-          {/* <BsCodeSlash /> iSyntax */}
           <Link to='/' style={{ textDecoration: 'none' }}>
             <h3>
               <i className='bi bi-code-slash'></i> iSyntax
             </h3>
           </Link>
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls='responsive-navbar-nav' />
-        <Navbar.Collapse id='responsive-navbar-nav'>
-          {/* <Nav as='ul' className='ms-auto d-lg-flex align-items-center'> */}
-          <Nav className='ms-auto d-lg-flex align-items-center'>
-            {links.map(({ label, link }, index) => (
-              <Nav.Item as='li' key={index} className='mx-3'>
-                {link.charAt(0) === '/' ? (
-                  <Link
-                    to={link}
-                    style={{ textDecoration: 'none' }}
-                    className='text-muted'
-                  >
-                    {label}
-                  </Link>
-                ) : (
-                  <Nav.Link href={link}>{label}</Nav.Link>
+
+        {!isLoading && (
+          <>
+            <Navbar.Toggle aria-controls='responsive-navbar-nav' />
+            <Navbar.Collapse id='responsive-navbar-nav'>
+              <Nav className='ms-auto d-lg-flex align-items-center'>
+                {links.map(({ label, link }, index) => (
+                  <Nav.Item as='li' key={index} className='mx-3'>
+                    {link.charAt(0) === '/' ? (
+                      <NavLink
+                        to={link}
+                        style={{ textDecoration: 'none' }}
+                        className='text-muted'
+                        activeClassName='selected'
+                      >
+                        {label}
+                      </NavLink>
+                    ) : (
+                      <Nav.Link href={link}>{label}</Nav.Link>
+                    )}
+                  </Nav.Item>
+                ))}
+
+                {avatar && username && (
+                  <Nav.Item as='li'>
+                    <Link
+                      to={`/profile/${username}`}
+                      style={{ textDecoration: 'none' }}
+                      className='text-muted'
+                    >
+                      <Image
+                        // referrerpolicy='no-referrer'
+                        src={avatar}
+                        roundedCircle
+                        width='28px'
+                        height='28px'
+                      />
+                    </Link>
+                  </Nav.Item>
                 )}
-              </Nav.Item>
-            ))}
 
-            {isDropdown ? (
-              <NavDropdown id='basic-nav-dropdown'>
-                <NavDropdown.Item href='/'>{btnLabel}</NavDropdown.Item>
-              </NavDropdown>
-            ) : (
-              <Nav.Item as='li'>
-                <Link to='/dashboard'>
-                  <Button variant='outline-primary' className='px-4 mx-3'>
-                    {btnLabel}
-                  </Button>
-                </Link>
-              </Nav.Item>
-            )}
-
-            {avatar && username && (
-              <Nav.Item as='li'>
-                <Link
-                  to={`/profile/${username}`}
-                  style={{ textDecoration: 'none' }}
-                  className='text-muted'
-                >
-                  {capitalizeFirstLetter(username)} &nbsp;&nbsp;&nbsp;
-                  <Image
-                    // referrerpolicy='no-referrer'
-                    src={avatar}
-                    roundedCircle
-                    width='28px'
-                    height='28px'
-                  />
-                </Link>
-              </Nav.Item>
-            )}
-
-            {/* <Nav.Item as='li'>
-              <Button variant='outline-primary' className='px-4 mx-3'>
-                {btnLabel}
-              </Button>
-            </Nav.Item> */}
-          </Nav>
-        </Navbar.Collapse>
+                <AuthNav />
+              </Nav>
+            </Navbar.Collapse>
+          </>
+        )}
       </Container>
     </Navbar>
   );

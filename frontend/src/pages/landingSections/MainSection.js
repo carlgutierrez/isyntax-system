@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function MainSection(props) {
   return (
@@ -15,18 +16,22 @@ function MainSection(props) {
               An Intelligent Gamified Web-based System for Programming Courses
             </p>
             <div className='d-grid gap-3 col-4 mx-auto mt-5'>
-              <button className='btn btn-primary' type='button'>
-                Synchronous
-              </button>
-              <button className='btn btn-primary' type='button'>
-                Asynchronous
-              </button>
+              <Link to='/dashboard' style={{ margin: 'auto' }}>
+                <button className='btn btn-primary' type='button'>
+                  Go to Dashboard
+                </button>
+              </Link>
+              <Link to='/leaderboard' style={{ margin: 'auto' }}>
+                <button className='btn btn-primary' type='button'>
+                  Leaderboard
+                </button>
+              </Link>
             </div>
           </div>
           <img
             className='img-fluid w-50 d-none d-sm-block py-5'
             src='images/Panel_Main_Pic.svg'
-            alt='Main Picture for the Panel'
+            alt='Landing Page Hero'
           />
         </div>
       </div>

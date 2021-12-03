@@ -1,29 +1,10 @@
 import React from 'react';
 import { Container, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import NavBar from './../components/NavBar';
-
-const links = [
-  {
-    label: 'Dashboard',
-    link: '/dashboard',
-  },
-  {
-    label: 'Leaderboard',
-    link: '/leaderboard',
-  },
-];
 
 function NotFound(props) {
   return (
     <Container>
-      <NavBar
-        links={links}
-        btnLabel='Logout'
-        avatar='https://lh3.googleusercontent.com/a-/AOh14GhqrK09oIp3AFwDy1cxcjfFLpNzabyvrvcIvuchMg=s96-c'
-        username='ronnel'
-        isDropdown={true}
-      />
       <div className='text-center mx-auto text-white mt-4 pt-4'>
         <h1>Page Not Found</h1>
         <p>

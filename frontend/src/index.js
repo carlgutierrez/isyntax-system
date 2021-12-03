@@ -4,6 +4,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { AppProvider } from './context';
 import { BrowserRouter } from 'react-router-dom';
+import Auth0ProviderWithHistory from './auth/auth0-provider-with-history';
 
 // Importing the Bootstrap CSS
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -14,9 +15,11 @@ import './index.css';
 
 ReactDOM.render(
   <BrowserRouter>
-    <AppProvider>
-      <App />
-    </AppProvider>
+    <Auth0ProviderWithHistory>
+      <AppProvider>
+        <App />
+      </AppProvider>
+    </Auth0ProviderWithHistory>
   </BrowserRouter>,
   document.getElementById('root')
 );

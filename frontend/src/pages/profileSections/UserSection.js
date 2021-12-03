@@ -10,7 +10,8 @@ function UserSection({ username, name, email, picture }) {
           roundedCircle
           width='300px'
           height='300px'
-          className='rounded mx-auto mt-3 '
+          className='rounded mx-auto mt-3'
+          referrerpolicy='no-referrer'
           src={picture}
         />
         <div className='card-body p-1-9 p-xl-5'>

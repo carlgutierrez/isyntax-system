@@ -113,3 +113,17 @@ pre {
   border-radius: 5px;
   padding-left: 15px;
 }
+
+/* Loading Component */
+.spinner {
+  /* position: absolute; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40vh;
+  width: 40vw;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}

@@ -1,22 +1,9 @@
 import { useEffect } from 'react';
-import NavBar from './../components/NavBar';
 import { CardGroup, Container, Row } from 'react-bootstrap';
 import CardComponent from '../components/CardComponent';
-import Paginate from './../components/Paginate';
 import FilterSection from './dashboardSection/FilterSection';
 import { useGlobalContext } from './../context';
 import dummyActivities from './../data/activities';
-
-const links = [
-  {
-    label: 'Dashboard',
-    link: '/dashboard',
-  },
-  {
-    label: 'Leaderboard',
-    link: '/leaderboard',
-  },
-];
 
 function DashboardPage() {
   const {
@@ -47,14 +34,6 @@ function DashboardPage() {
 
   return (
     <>
-      <NavBar
-        links={links}
-        btnLabel='Logout'
-        avatar='https://lh3.googleusercontent.com/a-/AOh14GhqrK09oIp3AFwDy1cxcjfFLpNzabyvrvcIvuchMg=s96-c'
-        username='ronnel'
-        isDropdown={true}
-      />
-
       <Container className='mt-sm-1 mt-lg-5'>
         <FilterSection
           status={status}
@@ -71,8 +50,6 @@ function DashboardPage() {
             ))}
           </Row>
         </CardGroup>
-
-        {/* <Paginate /> */}
 
         {/* <div class='bottomleft'>
           <img

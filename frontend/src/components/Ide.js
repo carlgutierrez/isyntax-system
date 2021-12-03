@@ -2,8 +2,10 @@ import React from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { atelierForestDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { Button } from 'react-bootstrap';
+import { useAuth0 } from '@auth0/auth0-react';
 
 function Ide({ status }) {
+  const { isAuthenticated } = useAuth0();
   return (
     <>
       <div className='row'>
@@ -41,12 +43,16 @@ function Ide({ status }) {
           <Button variant='primary' className='mx-2 mb-4'>
             Test
           </Button>
-          <Button variant='primary' className='mx-2 mb-4'>
-            Analyze
-          </Button>
-          <Button variant='primary' className='mx-2 mb-4'>
-            Submit
-          </Button>
+          {isAuthenticated && (
+            <>
+              <Button variant='primary' className='mx-2 mb-4'>
+                Analyze
+              </Button>
+              <Button variant='primary' className='mx-2 mb-4'>
+                Submit
+              </Button>
+            </>
+          )}
         </>
       )}
     </>

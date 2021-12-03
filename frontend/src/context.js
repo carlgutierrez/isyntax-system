@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import dummyActivities from './data/activities';
 
 const AppContext = React.createContext();
@@ -7,12 +7,7 @@ AppContext.displayName = 'AppContext';
 const AppProvider = ({ children }) => {
   const [status, setStatus] = useState('Todo');
   const [subject, setSubject] = useState('All');
-  const [subjects, setSubjects] = useState([
-    'All',
-    'ITEC 101',
-    'ITEC 102',
-    'ITEC 103',
-  ]);
+  const subjects = ['All', 'ITEC 101', 'ITEC 102', 'ITEC 103'];
   const [activities, setActivities] = useState(dummyActivities);
 
   // Dashboard Page
