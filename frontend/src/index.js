@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { AppProvider } from './context';
 import { BrowserRouter } from 'react-router-dom';
 
 // Importing the Bootstrap CSS
@@ -9,11 +10,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // Bootstrap icons
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-import './css/index.css';
+import './index.css';
 
 ReactDOM.render(
   <BrowserRouter>
-    <App />
+    <AppProvider>
+      <App />
+    </AppProvider>
   </BrowserRouter>,
   document.getElementById('root')
 );

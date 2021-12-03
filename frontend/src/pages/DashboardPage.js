@@ -1,8 +1,11 @@
-import React from 'react';
+import { useEffect } from 'react';
 import NavBar from './../components/NavBar';
-import { CardGroup, Container, Row, Col, Card } from 'react-bootstrap';
+import { CardGroup, Container, Row } from 'react-bootstrap';
 import CardComponent from '../components/CardComponent';
 import Paginate from './../components/Paginate';
+import FilterSection from './dashboardSection/FilterSection';
+import { useGlobalContext } from './../context';
+import dummyActivities from './../data/activities';
 
 const links = [
   {
@@ -15,77 +18,61 @@ const links = [
   },
 ];
 
-const activities = [
-  {
-    _id: '01',
-    title: 'Activity 1',
-    items: 50,
-    dueDate: '1 Nov, 3:00 PM',
-    dateCreated: '20 Oct',
-    postedBy: 'Ronnel "Big Daddy" Javier',
-  },
-  {
-    _id: '02',
-    title: 'Activity 2',
-    items: 75,
-    dueDate: '20 Nov, 3:00 PM',
-    dateCreated: '20 Oct',
-    postedBy: 'Lance Jericho Pestaño Jr.',
-  },
-  {
-    _id: '03',
-    title: 'Activity 3',
-    items: 100,
-    dueDate: '20 Nov, 3:00 PM',
-    dateCreated: '20 Oct',
-    postedBy: 'Ronnel "Big Daddy" Javier',
-  },
-  {
-    _id: '04',
-    title: 'Activity 4',
-    items: 15,
-    dueDate: '1 Nov, 3:00 PM',
-    dateCreated: '20 Oct',
-    postedBy: 'Lance Jericho Pestaño Jr.',
-  },
-  {
-    _id: '05',
-    title: 'Activity 5',
-    items: 50,
-    dueDate: '19 Dec, 3:00 PM',
-    dateCreated: '20 Oct',
-    postedBy: 'Ronnel "Big Daddy" Javier',
-  },
-  {
-    _id: '06',
-    title: 'Activity 6',
-    items: 69,
-    dueDate: '25 Dec, 3:00 PM',
-    dateCreated: '20 Oct',
-    postedBy: 'John Christian "AquaHub Sponsor" Austria',
-  },
-];
-
 function DashboardPage() {
+  const {
+    status,
+    subject,
+    subjects,
+    activities,
+    setActivities,
+    handleStatus,
+    handleSubject,
+  } = useGlobalContext();
+
+  useEffect(() => {
+    if (subject === 'All') {
+      setActivities(
+        dummyActivities.filter(activity => {
+          return activity.status === status;
+        })
+      );
+    } else {
+      setActivities(
+        dummyActivities.filter(activity => {
+          return activity.status === status && activity.subject === subject;
+        })
+      );
+    }
+  }, [status, subject]);
+
   return (
     <>
       <NavBar
         links={links}
         btnLabel='Logout'
         avatar='https://lh3.googleusercontent.com/a-/AOh14GhqrK09oIp3AFwDy1cxcjfFLpNzabyvrvcIvuchMg=s96-c'
+        username='ronnel'
         isDropdown={true}
       />
 
-      <Container className='mt-5'>
-        <CardGroup>
-          <Row xs={1} md={3} className='g-4'>
+      <Container className='mt-sm-1 mt-lg-5'>
+        <FilterSection
+          status={status}
+          subject={subject}
+          subjects={subjects}
+          handleStatus={handleStatus}
+          handleSubject={handleSubject}
+        />
+
+        <CardGroup style={{ maxWidth: '100%' }}>
+          <Row xs={1} md={3} className='g-4' style={{ width: '100%' }}>
             {activities.map((activity, index) => (
               <CardComponent {...activity} key={index} />
             ))}
           </Row>
         </CardGroup>
 
-        <Paginate />
+        {/* <Paginate /> */}
 
         {/* <div class='bottomleft'>
           <img

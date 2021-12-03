@@ -1,10 +1,20 @@
 import React from 'react';
-import { Container, Navbar, Nav, Button, NavDropdown } from 'react-bootstrap';
+import {
+  Container,
+  Navbar,
+  Nav,
+  Button,
+  NavDropdown,
+  Image,
+} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { BsCodeSlash } from 'react-icons/bs';
-import { Image } from 'react-bootstrap';
 
-function NavBar({ links, btnLabel, avatar, isDropdown }) {
+const capitalizeFirstLetter = string => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
+function NavBar({ links, btnLabel, avatar, username, isDropdown }) {
   return (
     <Navbar
       collapseOnSelect
@@ -24,19 +34,27 @@ function NavBar({ links, btnLabel, avatar, isDropdown }) {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls='responsive-navbar-nav' />
         <Navbar.Collapse id='responsive-navbar-nav'>
-          {/* <Nav></Nav> */}
-          <Nav as='ul' className='ms-auto d-lg-flex align-items-center'>
+          {/* <Nav as='ul' className='ms-auto d-lg-flex align-items-center'> */}
+          <Nav className='ms-auto d-lg-flex align-items-center'>
             {links.map(({ label, link }, index) => (
               <Nav.Item as='li' key={index} className='mx-3'>
-                <Nav.Link href={link}>{label}</Nav.Link>
+                {link.charAt(0) === '/' ? (
+                  <Link
+                    to={link}
+                    style={{ textDecoration: 'none' }}
+                    className='text-muted'
+                  >
+                    {label}
+                  </Link>
+                ) : (
+                  <Nav.Link href={link}>{label}</Nav.Link>
+                )}
               </Nav.Item>
             ))}
 
             {isDropdown ? (
-              <NavDropdown title='' id='basic-nav-dropdown'>
-                <NavDropdown.Item href='#action/3.1'>
-                  {btnLabel}
-                </NavDropdown.Item>
+              <NavDropdown id='basic-nav-dropdown'>
+                <NavDropdown.Item href='/'>{btnLabel}</NavDropdown.Item>
               </NavDropdown>
             ) : (
               <Nav.Item as='li'>
@@ -48,17 +66,22 @@ function NavBar({ links, btnLabel, avatar, isDropdown }) {
               </Nav.Item>
             )}
 
-            {avatar && (
+            {avatar && username && (
               <Nav.Item as='li'>
-                <Nav.Link href='/profile'>
-                  Ronnel &nbsp;&nbsp;&nbsp;
+                <Link
+                  to={`/profile/${username}`}
+                  style={{ textDecoration: 'none' }}
+                  className='text-muted'
+                >
+                  {capitalizeFirstLetter(username)} &nbsp;&nbsp;&nbsp;
                   <Image
+                    // referrerpolicy='no-referrer'
                     src={avatar}
                     roundedCircle
                     width='28px'
                     height='28px'
                   />
-                </Nav.Link>
+                </Link>
               </Nav.Item>
             )}
 
