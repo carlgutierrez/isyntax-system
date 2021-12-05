@@ -1,30 +1,52 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import InstructionSection from './activitySections/InstructionSection';
 import Ide from './../components/Ide';
-import SuggestionSection from './activitySections/SuggestionSection';
 import { useGlobalContext } from './../context';
 import { Redirect, useParams } from 'react-router';
-import { useAuth0 } from '@auth0/auth0-react';
+import { Link } from 'react-router-dom';
+import Loading from './../components/Loading';
 
 function ActivityPage() {
-  const { activities } = useGlobalContext();
-  const { isAuthenticated } = useAuth0();
+  const {
+    isLoading,
+    userProfile,
+    activity,
+    findActivity,
+    setToggleSuggestion,
+    setToggleTest,
+  } = useGlobalContext();
 
   const { _id } = useParams();
-  let activity = activities.filter(activity => {
-    return activity._id === _id;
-  });
+  useEffect(() => {
+    findActivity(_id);
+    setToggleSuggestion(false);
+    setToggleTest(false);
+  }, []);
 
-  if (activity.length === 0) return <Redirect to='/not-found' />;
+  if (isLoading)
+    return (
+      <div className='d-flex justify-content-center align-items-center'>
+        <Loading />
+      </div>
+    );
+
+  if (
+    activity &&
+    Object.keys(activity).length === 0 &&
+    Object.getPrototypeOf(activity) === Object.prototype
+  )
+    return <Redirect to='/not-found' />;
 
   return (
-    <Container>
-      <InstructionSection {...activity[0]} />
-      <Ide status={activity[0].status} />
-      {activity[0].status === 'Todo' && isAuthenticated && (
-        <SuggestionSection />
-      )}
+    <Container style={{ height: '160vh' }}>
+      <Link to='/dashboard'>
+        <h4 className='m-2'>
+          <i className='bi bi-chevron-left'></i>
+        </h4>
+      </Link>
+      <InstructionSection {...activity} />
+      <Ide status={activity.status} role={userProfile.role} />
     </Container>
   );
 }

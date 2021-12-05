@@ -1,33 +1,7 @@
 import React from 'react';
 import { Image } from 'react-bootstrap';
-
-const userBadges = [
-  {
-    name: 'Badge 1',
-    picture:
-      'https://lh3.googleusercontent.com/a-/AOh14GhqrK09oIp3AFwDy1cxcjfFLpNzabyvrvcIvuchMg=s96-c',
-  },
-  {
-    name: 'Badge 2',
-    picture:
-      'https://lh3.googleusercontent.com/a-/AOh14GhqrK09oIp3AFwDy1cxcjfFLpNzabyvrvcIvuchMg=s96-c',
-  },
-  {
-    name: 'Badge 3',
-    picture:
-      'https://lh3.googleusercontent.com/a-/AOh14GhqrK09oIp3AFwDy1cxcjfFLpNzabyvrvcIvuchMg=s96-c',
-  },
-  {
-    name: 'Badge 4',
-    picture:
-      'https://lh3.googleusercontent.com/a-/AOh14GhqrK09oIp3AFwDy1cxcjfFLpNzabyvrvcIvuchMg=s96-c',
-  },
-  {
-    name: 'Badge 5',
-    picture:
-      'https://lh3.googleusercontent.com/a-/AOh14GhqrK09oIp3AFwDy1cxcjfFLpNzabyvrvcIvuchMg=s96-c',
-  },
-];
+import userBadges from './../../data/badges';
+// const userBadges = [];
 
 function BadgesSection() {
   return (
@@ -37,16 +11,28 @@ function BadgesSection() {
       </div>
       <div className='border-10 shadow bg-dark card-body'>
         <div className='row text-center-group'>
-          {userBadges.map(({ name, picture }, index) => (
-            <div className='col-md'>
-              <div className='card bg-dark text-light cards'>
-                <div className='card-body text-center'>
-                  <Image src={picture} roundedCircle />
-                  <p className='card-text'>{name}</p>
+          {userBadges.length !== 0 ? (
+            userBadges.map(({ name, picture }, index) => (
+              <div className='col-lg-3 col-md-12 col-sm-12 mb-2' key={index}>
+                <div className='card bg-dark text-light cards'>
+                  <div className='card-body text-center'>
+                    <Image
+                      src={picture}
+                      roundedCircle
+                      style={{ width: '100%', height: '100%' }}
+                    />
+                    <p className='card-text'>{name}</p>
+                  </div>
                 </div>
               </div>
+            ))
+          ) : (
+            <div className='col-12 text-white m-4'>
+              <h5 className='d-flex justify-content-center align-items-center'>
+                No Badges Aquired
+              </h5>
             </div>
-          ))}
+          )}
         </div>
       </div>
     </div>

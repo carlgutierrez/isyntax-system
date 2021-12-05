@@ -12,9 +12,11 @@ function NotFound(props) {
           exist on this site.
         </p>
         <Button variant='primary'>
-          <Link to='/' style={{ textDecoration: 'none', color: 'inherit' }}>
+          {/* <Link to='/' style={{ textDecoration: 'none', color: 'inherit' }}> */}
+          <a href='/' style={{ textDecoration: 'none', color: 'inherit' }}>
             <i class='bi bi-arrow-left-short'></i>Back to our site
-          </Link>
+          </a>
+          {/* </Link> */}
         </Button>
       </div>
     </Container>

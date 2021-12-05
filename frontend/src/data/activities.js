@@ -1,7 +1,7 @@
 const activities = [
   {
     _id: '01',
-    title: 'Activity 1',
+    title: 'Cubic X',
     items: 50,
     dueDate: '1 Nov, 3:00 PM',
     dateCreated: '20 Oct',

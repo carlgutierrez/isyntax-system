@@ -3,16 +3,17 @@ import { Container, Navbar, Nav, Image } from 'react-bootstrap';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import AuthNav from './AuthNav';
 import { useAuth0 } from '@auth0/auth0-react';
+import { useGlobalContext } from './../context';
 
-const dashboardlinks = [
-  {
-    label: 'Dashboard',
-    link: '/dashboard',
-  },
-  {
-    label: 'Leaderboard',
-    link: '/leaderboard',
-  },
+const studentLinks = [
+  { label: 'Dashboard', link: '/dashboard' },
+  { label: 'Leaderboard', link: '/leaderboard' },
+];
+
+const teacherLinks = [
+  { label: 'Dashboard', link: '/dashboard' },
+  { label: 'Students', link: '/students' },
+  { label: 'Leaderboard', link: '/leaderboard' },
 ];
 
 const landingLinks = [
@@ -30,15 +31,14 @@ const landingLinks = [
   },
 ];
 
-const avatar =
-  'https://lh3.googleusercontent.com/a-/AOh14GhqrK09oIp3AFwDy1cxcjfFLpNzabyvrvcIvuchMg=s96-c';
-
-const username = 'ronnel';
-
 function NavBar() {
-  const { isLoading } = useAuth0();
+  const { userProfile } = useGlobalContext();
+
+  const { isLoading, isAuthenticated } = useAuth0();
   const { pathname } = useLocation();
-  const links = pathname === '/' ? landingLinks : dashboardlinks;
+  const dashboardLinks =
+    userProfile.role === 'student' ? studentLinks : teacherLinks;
+  const links = pathname === '/' ? landingLinks : dashboardLinks;
   return (
     <Navbar
       collapseOnSelect
@@ -78,21 +78,21 @@ function NavBar() {
                   </Nav.Item>
                 ))}
 
-                {avatar && username && (
+                {isAuthenticated && userProfile && (
                   <Nav.Item as='li'>
-                    <Link
-                      to={`/profile/${username}`}
+                    {/* <Link
+                      to={`/profile/${userProfile.username}`}
                       style={{ textDecoration: 'none' }}
-                      className='text-muted'
-                    >
+                    > */}
+                    <a href={`/profile/${userProfile.username}`}>
                       <Image
                         // referrerpolicy='no-referrer'
-                        src={avatar}
+                        src={userProfile.picture}
                         roundedCircle
                         width='28px'
                         height='28px'
                       />
-                    </Link>
+                    </a>
                   </Nav.Item>
                 )}
 

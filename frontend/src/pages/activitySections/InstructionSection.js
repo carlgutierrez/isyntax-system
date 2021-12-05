@@ -1,5 +1,6 @@
 import React from 'react';
 import MarkdownIt from 'markdown-it';
+import moment from 'moment-timezone';
 
 function InstructionSection({
   title,
@@ -18,10 +19,12 @@ function InstructionSection({
     <div className='mx-auto text-white '>
       <h1 className='text-primary text-center'>{title}</h1>
       <p className='fw-bold'>
-        {postedBy} &nbsp;&#8226; &nbsp; {dateCreated}
+        {postedBy} &nbsp;&#8226; &nbsp;{' '}
+        {moment(dateCreated).tz('Asia/Manila').format('D MMM')}
       </p>
       <p className='fw-bold'>
-        {items} points &nbsp;&#8226;&nbsp; Due {dueDate}{' '}
+        {items} points &nbsp;&#8226;&nbsp; Due{' '}
+        {moment(dueDate).tz('Asia/Manila').format('D MMM, hh:mm A')}{' '}
       </p>
 
       <div dangerouslySetInnerHTML={{ __html: result }} />

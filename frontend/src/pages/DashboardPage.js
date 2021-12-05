@@ -1,35 +1,51 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { CardGroup, Container, Row } from 'react-bootstrap';
 import CardComponent from '../components/CardComponent';
 import FilterSection from './dashboardSection/FilterSection';
 import { useGlobalContext } from './../context';
-import dummyActivities from './../data/activities';
 
 function DashboardPage() {
   const {
+    userProfile,
     status,
     subject,
     subjects,
     activities,
-    setActivities,
+    // setActivities,
     handleStatus,
     handleSubject,
   } = useGlobalContext();
 
+  let [dashboardActivities, setDashboardActivities] = useState(activities);
+
   useEffect(() => {
     if (subject === 'All') {
-      setActivities(
-        dummyActivities.filter(activity => {
+      setDashboardActivities(
+        activities.filter(activity => {
           return activity.status === status;
         })
       );
     } else {
-      setActivities(
-        dummyActivities.filter(activity => {
+      setDashboardActivities(
+        activities.filter(activity => {
           return activity.status === status && activity.subject === subject;
         })
       );
     }
+
+    // if (subject === 'All') {
+    //   setActivities(
+    //     activities.filter(activity => {
+    //       return activity.status === status;
+    //     })
+    //   );
+    // } else {
+    //   setActivities(
+    //     activities.filter(activity => {
+    //       return activity.status === status && activity.subject === subject;
+    //     })
+    //   );
+    // }
   }, [status, subject]);
 
   return (
@@ -39,13 +55,15 @@ function DashboardPage() {
           status={status}
           subject={subject}
           subjects={subjects}
+          role={userProfile.role}
           handleStatus={handleStatus}
           handleSubject={handleSubject}
         />
 
-        <CardGroup style={{ maxWidth: '100%' }}>
+        {/* <CardGroup style={{ maxWidth: '100%' }}> */}
+        <CardGroup className='justify-content-center'>
           <Row xs={1} md={3} className='g-4' style={{ width: '100%' }}>
-            {activities.map((activity, index) => (
+            {dashboardActivities.map((activity, index) => (
               <CardComponent {...activity} key={index} />
             ))}
           </Row>

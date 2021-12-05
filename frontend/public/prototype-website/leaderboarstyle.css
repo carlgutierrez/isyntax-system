@@ -1,0 +1,49 @@
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+body{
+  font-family: Ubuntu;
+}
+
+.MainPic{
+  position: absolute;
+  width: 962px;
+  height: 990px;
+  left: 914px;
+  top: 264px;
+}
+
+.hgtMain{
+  height: 100vh;
+}
+
+/* NAVBAR */
+.image {
+  vertical-align: middle;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+}
+
+/* LDB */
+table tbody{
+  cursor: pointer;
+}
+
+/* Image */
+#leaderboards{
+  position: relative;
+}
+/* #dashboard{
+  position: absolute;
+} */
+.bottomleft{
+    position: absolute;
+    top: 100%;
+    left: 16px;
+}
+.images{
+  width: 63%;
+}

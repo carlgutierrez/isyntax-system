@@ -1,9 +1,9 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
 
-function SuggestionSection(props) {
+function SuggestionSection() {
   return (
-    <div className='text-white'>
+    <div className={'text-white'}>
       <h4>Suggestion</h4>
       <Table bordered responsive className='text-white text-center'>
         <thead>
