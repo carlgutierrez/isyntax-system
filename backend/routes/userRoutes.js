@@ -11,7 +11,6 @@ router.get('/', async (req, res) => {
   res.send(users);
 });
 
-// carlg6445@gmail.com
 // FIND USER BY EMAIL
 router.get('/:email', async (req, res) => {
   const user = await User.find({
@@ -29,11 +28,17 @@ router.post('/', validateMiddleware(validateUser), async (req, res) => {
 
   const indexOfAt = req.body.email.indexOf('@');
   const username = req.body.email.slice(0, indexOfAt).toLowerCase();
+
+  // high res google image
+  let picture = req.body.picture;
+  if (picture.includes('https://lh3.googleusercontent.com'))
+    picture = picture.replace('s96-c', 's500-c');
+
   user = new User({
     name: req.body.name,
     username,
     email: req.body.email.toLowerCase(),
-    picture: req.body.picture,
+    picture,
   });
 
   await user.save();

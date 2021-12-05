@@ -37,7 +37,7 @@ function NavBar() {
   const { isLoading, isAuthenticated } = useAuth0();
   const { pathname } = useLocation();
   const dashboardLinks =
-    userProfile.role === 'student' ? studentLinks : teacherLinks;
+    userProfile.role === 'student' ? teacherLinks : studentLinks;
   const links = pathname === '/' ? landingLinks : dashboardLinks;
   return (
     <Navbar

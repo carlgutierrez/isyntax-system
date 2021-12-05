@@ -3,6 +3,7 @@ import DashboardPage from './pages/DashboardPage';
 import ProfilePage from './pages/ProfilePage';
 import ActivityPage from './pages/ActivityPage';
 import CreatePage from './pages/CreatePage';
+import LeaderboardPage from './pages/LeaderboardPage';
 import NotFound from './pages/NotFound';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import NavBar from './components/NavBar';
@@ -13,22 +14,12 @@ import 'react-toastify/dist/ReactToastify.css';
 function App() {
   return (
     <>
-      <ToastContainer
-        position='top-right'
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme='dark'
-      />
+      <ToastContainer theme='dark' />
       <NavBar />
       <Switch>
         <Route exact path='/' component={LandingPage} />
         <ProtectedRoute exact path='/dashboard' component={DashboardPage} />
+        <Route exact path='/leaderboard' component={LeaderboardPage} />
         <Route exact path='/activity/:_id' component={ActivityPage} />
         <Route exact path='/profile/:username' component={ProfilePage} />
         <ProtectedRoute exact path='/create-activity' component={CreatePage} />

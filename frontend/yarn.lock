@@ -9783,10 +9783,10 @@
     "prismjs" "^1.25.0"
     "refractor" "^3.2.0"
 
-"react-toastify@^7.0.3":
-  "integrity" "sha512-cxZ5rfurC8LzcZQMTYc8RHIkQTs+BFur18Pzk6Loz6uS8OXUWm6nXVlH/wqglz4Z7UAE8xxcF5mRjfE13487uQ=="
-  "resolved" "https://registry.npmjs.org/react-toastify/-/react-toastify-7.0.3.tgz"
-  "version" "7.0.3"
+"react-toastify@^8.1.0":
+  "integrity" "sha512-M+Q3rTmEw/53Csr7NsV/YnldJe4c7uERcY7Tma9mvLU98QT2VhIkKwjBzzxZkJRk/oBKyUAtkyMjMgO00hx6gQ=="
+  "resolved" "https://registry.npmjs.org/react-toastify/-/react-toastify-8.1.0.tgz"
+  "version" "8.1.0"
   dependencies:
     "clsx" "^1.1.1"
 

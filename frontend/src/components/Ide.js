@@ -15,7 +15,7 @@ function Ide({ status, role }) {
 
   const handleMana = () => {
     if (currentMana >= 1) setCurrentMana(currentMana - 1);
-    else toast.warning('Not enough mana!');
+    toast.warning('Not enough mana !');
   };
 
   return (

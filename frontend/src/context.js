@@ -7,6 +7,7 @@ const AppContext = React.createContext();
 AppContext.displayName = 'AppContext';
 
 const AppProvider = ({ children }) => {
+  const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [profileInfo, setProfileInfo] = useState({});
   const [userProfile, setUserProfile] = useState({});
@@ -17,6 +18,15 @@ const AppProvider = ({ children }) => {
   const [activity, setActivity] = useState({});
   const [toggleSuggestion, setToggleSuggestion] = useState(false);
   const [toggleTest, setToggleTest] = useState(false);
+
+  // Leaderboard Page
+  const getAllUsers = async () => {
+    setIsLoading(true);
+    const { data } = await axios.get('/api/users');
+    setUsers(data);
+    setIsLoading(false);
+    return true;
+  };
 
   // Dashboard Subjects
   useEffect(() => {
@@ -108,6 +118,7 @@ const AppProvider = ({ children }) => {
   return (
     <AppContext.Provider
       value={{
+        users,
         isLoading,
         profileInfo,
         userProfile,
@@ -126,6 +137,7 @@ const AppProvider = ({ children }) => {
         setActivities,
         handleStatus,
         handleSubject,
+        getAllUsers,
       }}
     >
       {children}
