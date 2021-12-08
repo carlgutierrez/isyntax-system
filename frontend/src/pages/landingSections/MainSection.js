@@ -16,16 +16,18 @@ function MainSection(props) {
               An Intelligent Gamified Web-based System for Programming Courses
             </p>
             <div className='d-grid gap-3 col-4 mx-auto mt-5'>
-              <Link to='/dashboard' style={{ margin: 'auto' }}>
+              {/* <Link to='/dashboard' style={{ margin: 'auto' }}> */}
+              <a href='/dashboard' style={{ margin: 'auto' }}>
                 <button className='btn btn-primary' type='button'>
                   Go to Dashboard
                 </button>
-              </Link>
-              <Link to='/leaderboard' style={{ margin: 'auto' }}>
+              </a>
+              {/* <Link to='/leaderboard' style={{ margin: 'auto' }}> */}
+              <a href='/leaderboard' style={{ margin: 'auto' }}>
                 <button className='btn btn-primary' type='button'>
                   Leaderboard
                 </button>
-              </Link>
+              </a>
             </div>
           </div>
           <img

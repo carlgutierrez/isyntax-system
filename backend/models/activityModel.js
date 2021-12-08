@@ -17,7 +17,7 @@ const Activity = mongoose.model(
       default: Date.now,
     },
     dueDate: {
-      type: Date,
+      type: String,
       required: true,
     },
     subject: {
@@ -36,6 +36,10 @@ const Activity = mongoose.model(
       type: String,
       required: true,
     },
+    testCases: {
+      type: Array,
+      required: true,
+    },
   })
 );
 
@@ -44,12 +48,13 @@ function validateActivity(activity) {
   const schema = Joi.object({
     title: Joi.string().required(),
     items: Joi.number().required(),
-    dueDate: Joi.required(),
+    dueDate: Joi.string().required(),
     subject: Joi.string().required(),
     // To be remove
     status: Joi.string().required(),
     postedBy: Joi.string().required(),
     instructions: Joi.string().required(),
+    testCases: Joi.array().required(),
   });
 
   return schema.validate(activity);

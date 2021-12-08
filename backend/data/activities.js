@@ -4,70 +4,85 @@
 const activities = [
   {
     title: 'Cubic X',
-    items: 50,
-    dueDate: '2021-12-26T07:00:00.000Z',
-    // dateCreated: '20 Oct',
+    items: 100,
+    dueDate: '2021-12-25T07:00:00.000Z',
     subject: 'ITEC 101',
     status: 'Todo',
     // TODO _id
     postedBy: 'Carl John Gutierrez',
     instructions:
       '#### Instruction\nWrite a program which calculates the cube of a given integer x.\n\n#### Input\nAn integer x is given in a line.\n\n#### Output\nPrint the cube of x in a line.\n\n#### Sample Input 1\n```\n2\n```\n#### Sample Output 1\n```\n8\n```',
+    testCases: [
+      {
+        testNumber: 1,
+        input: '2',
+        output: '8',
+      },
+      {
+        testNumber: 2,
+        input: '4',
+        output: '64',
+      },
+      {
+        testNumber: 3,
+        input: '15',
+        output: '3375',
+      },
+    ],
   },
   {
-    title: 'Activity 2',
-    items: 75,
-    dueDate: '2021-12-26T07:00:00.000Z',
-    // dateCreated: '20 Oct',
-    subject: 'ITEC 101',
-    status: 'Todo',
-    postedBy: 'Carl John Gutierrez',
-    instructions:
-      '##### Instruction\nThis is activity 2\n\n```java\nActivity 2\n```',
-  },
-  {
-    title: 'Activity 3',
-    items: 100,
-    dueDate: '2021-12-26T07:00:00.000Z',
-    // dateCreated: '20 Oct',
-    subject: 'ITEC 102',
-    status: 'Todo',
-    postedBy: 'Lance Jericho Pestaño Jr.',
-    instructions:
-      '##### Instruction\nThis is activity 3\n\n```java\nActivity 3\n```',
-  },
-  {
-    title: 'Activity 4',
-    items: 15,
-    dueDate: '2021-12-26T07:00:00.000Z',
-    // dateCreated: '20 Oct',
-    subject: 'ITEC 102',
-    status: 'Todo',
-    postedBy: 'Lance Jericho Pestaño Jr.',
-    instructions:
-      '##### Instruction\nThis is activity 4\n\n```java\nActivity 4\n```',
-  },
-  {
-    title: 'Activity 5',
+    title: 'Sum of 2 Integers',
     items: 50,
-    dueDate: '2021-12-26T07:00:00.000Z',
-    // dateCreated: '20 Oct',
-    subject: 'ITEC 103',
+    dueDate: 'noDueDate',
+    subject: 'ITEC 102',
     status: 'Todo',
-    postedBy: 'John Christian "AquaHub Sponsor" Austria',
+    postedBy: 'Ronnel Javier',
     instructions:
-      '##### Instruction\nThis is activity 5\n\n```java\nActivity 5\n```',
+      '#### **Instruction**\nWrite a code that returns the sum of the 2 inputted integers.\n##### Sample Input 1\n```\n6\n9\n```\n##### Sample Output 1\n```\n15\n```\n##### Sample Input 2\n```\n106\n56\n```\n##### Sample Output 2\n```\n162\n```',
+    testCases: [
+      {
+        testNumber: 1,
+        input: '6\n\n9',
+        output: '15',
+      },
+      {
+        testNumber: 2,
+        input: '106\n\n56',
+        output: '162',
+      },
+      {
+        testNumber: 2,
+        input: '2021\n\n2022',
+        output: '4043',
+      },
+    ],
   },
   {
-    title: 'Activity 6',
-    items: 69,
-    dueDate: '2021-12-26T07:00:00.000Z',
-    // dateCreated: '20 Oct',
+    title: 'Even or Odd',
+    items: 75,
+    dueDate: '2021-12-25T07:00:00.000Z',
     subject: 'ITEC 103',
-    status: 'Finished',
-    postedBy: 'John Christian "AquaHub Sponsor" Austria',
+    status: 'Todo',
+    postedBy: 'Jhon Stewell Bonifacio',
     instructions:
-      '##### Instruction\nThis is activity 6\n\n```java\nActivity 6\n```',
+      "#### **Instruction**\nWrite a code that returns 'even' or 'odd' based on what type is the number inputted.\n##### Sample Input 1\n```\n3\n```\n##### Sample Output 1\n```\nodd\n```\n##### Sample Input 2\n```\n10\n```\n##### Sample Output 2\n```\neven\n```",
+    testCases: [
+      {
+        testNumber: 1,
+        input: '3',
+        output: 'odd',
+      },
+      {
+        testNumber: 2,
+        input: '10',
+        output: 'even',
+      },
+      {
+        testNumber: 2,
+        input: '75',
+        output: 'odd',
+      },
+    ],
   },
 ];
 

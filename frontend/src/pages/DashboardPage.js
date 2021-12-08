@@ -3,6 +3,7 @@ import { CardGroup, Container, Row } from 'react-bootstrap';
 import CardComponent from '../components/CardComponent';
 import FilterSection from './dashboardSection/FilterSection';
 import { useGlobalContext } from './../context';
+import Loading from './../components/Loading';
 
 function DashboardPage() {
   const {
@@ -11,12 +12,17 @@ function DashboardPage() {
     subject,
     subjects,
     activities,
-    // setActivities,
     handleStatus,
     handleSubject,
+    getActivities,
+    isLoading,
   } = useGlobalContext();
 
   let [dashboardActivities, setDashboardActivities] = useState(activities);
+
+  useEffect(() => {
+    getActivities();
+  }, []);
 
   useEffect(() => {
     if (subject === 'All') {
@@ -32,21 +38,14 @@ function DashboardPage() {
         })
       );
     }
-
-    // if (subject === 'All') {
-    //   setActivities(
-    //     activities.filter(activity => {
-    //       return activity.status === status;
-    //     })
-    //   );
-    // } else {
-    //   setActivities(
-    //     activities.filter(activity => {
-    //       return activity.status === status && activity.subject === subject;
-    //     })
-    //   );
-    // }
   }, [status, subject]);
+
+  if (isLoading)
+    return (
+      <div className='d-flex justify-content-center align-items-center'>
+        <Loading />
+      </div>
+    );
 
   return (
     <>

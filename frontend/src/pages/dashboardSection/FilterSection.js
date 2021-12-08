@@ -45,11 +45,12 @@ function FilterSection({
           </DropdownButton>{' '}
         </>
       ) : (
-        <Link to='/create-activity'>
+        // <Link to='/create-activity'>
+        <a href='/create-activity'>
           <Button variant='primary' className='mx-3'>
             Create Activity
           </Button>
-        </Link>
+        </a>
       )}
     </div>
   );

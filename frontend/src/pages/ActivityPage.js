@@ -40,13 +40,14 @@ function ActivityPage() {
 
   return (
     <Container style={{ height: '160vh' }}>
-      <Link to='/dashboard'>
+      {/* <Link to='/dashboard'> */}
+      <a href='/dashboard'>
         <h4 className='m-2'>
           <i className='bi bi-chevron-left'></i>
         </h4>
-      </Link>
+      </a>
       <InstructionSection {...activity} />
-      <Ide status={activity.status} role={userProfile.role} />
+      <Ide activity={activity} role={userProfile.role} id={_id} />
     </Container>
   );
 }

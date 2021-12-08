@@ -14,6 +14,12 @@ function InstructionSection({
 }) {
   const md = new MarkdownIt();
   const result = md.render(instructions);
+  console.log(instructions);
+
+  const pageDueDate =
+    dueDate === 'noDueDate'
+      ? 'No due date'
+      : `Due ${moment(dueDate).tz('Africa/Abidjan').format('D MMM, hh:mm A')}`;
 
   return (
     <div className='mx-auto text-white '>
@@ -23,8 +29,7 @@ function InstructionSection({
         {moment(dateCreated).tz('Asia/Manila').format('D MMM')}
       </p>
       <p className='fw-bold'>
-        {items} points &nbsp;&#8226;&nbsp; Due{' '}
-        {moment(dueDate).tz('Asia/Manila').format('D MMM, hh:mm A')}{' '}
+        {items} points &nbsp;&#8226;&nbsp; {pageDueDate}
       </p>
 
       <div dangerouslySetInnerHTML={{ __html: result }} />

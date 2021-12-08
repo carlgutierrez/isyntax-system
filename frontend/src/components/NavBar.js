@@ -37,7 +37,7 @@ function NavBar() {
   const { isLoading, isAuthenticated } = useAuth0();
   const { pathname } = useLocation();
   const dashboardLinks =
-    userProfile.role === 'student' ? teacherLinks : studentLinks;
+    userProfile.role !== 'student' ? teacherLinks : studentLinks;
   const links = pathname === '/' ? landingLinks : dashboardLinks;
   return (
     <Navbar
@@ -49,11 +49,11 @@ function NavBar() {
     >
       <Container>
         <Navbar.Brand href='/' className='text-primary'>
-          <Link to='/' style={{ textDecoration: 'none' }}>
+          <a href='/' style={{ textDecoration: 'none' }}>
             <h3>
               <i className='bi bi-code-slash'></i> iSyntax
             </h3>
-          </Link>
+          </a>
         </Navbar.Brand>
 
         {!isLoading && (
@@ -64,14 +64,15 @@ function NavBar() {
                 {links.map(({ label, link }, index) => (
                   <Nav.Item as='li' key={index} className='mx-3'>
                     {link.charAt(0) === '/' ? (
-                      <NavLink
-                        to={link}
+                      // <NavLink
+                      <a
+                        href={link}
                         style={{ textDecoration: 'none' }}
                         className='text-muted'
                         activeClassName='selected'
                       >
                         {label}
-                      </NavLink>
+                      </a>
                     ) : (
                       <Nav.Link href={link}>{label}</Nav.Link>
                     )}

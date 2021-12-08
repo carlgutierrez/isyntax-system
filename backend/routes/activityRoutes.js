@@ -25,16 +25,17 @@ router.get('/:id', validateObjectId, async (req, res) => {
 // OK
 // ADD NEW ACTIVITY
 router.post('/', validateMiddleware(validateActivity), async (req, res) => {
-  const dueDate = new Date(req.body.dueDate);
+  // const dueDate = new Date(req.body.dueDate);
 
   const activity = new Activity({
     title: req.body.title,
     items: req.body.items,
-    dueDate,
+    dueDate: req.body.dueDate,
     subject: req.body.subject,
     status: req.body.status,
     postedBy: req.body.postedBy,
     instructions: req.body.instructions,
+    testCases: req.body.testCases,
   });
 
   await activity.save();

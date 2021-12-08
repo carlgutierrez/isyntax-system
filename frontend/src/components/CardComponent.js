@@ -2,11 +2,23 @@ import React from 'react';
 import { Col, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import moment from 'moment-timezone';
+// import moment from 'moment';
 
 function CardComponent(activity) {
+  const dueDate =
+    activity.dueDate === 'noDueDate'
+      ? 'No due date'
+      : `Due ${moment(activity.dueDate)
+          .tz('Africa/Abidjan')
+          .format('D MMM, hh:mm A')}`;
   return (
-    <Link
-      to={`/activity/${activity._id}`}
+    // <Link
+    //   to={`/activity/${activity._id}`}
+    //   style={{ textDecoration: 'none' }}
+    //   className='text-dark'
+    // >
+    <a
+      href={`/activity/${activity._id}`}
       style={{ textDecoration: 'none' }}
       className='text-dark'
     >
@@ -22,16 +34,11 @@ function CardComponent(activity) {
               {activity.items} items
             </Card.Text>
             <hr />
-            <Card.Text>
-              Due{' '}
-              {moment(activity.dueDate)
-                .tz('Asia/Manila')
-                .format('D MMM, hh:mm A')}
-            </Card.Text>
+            <Card.Text>{dueDate}</Card.Text>
           </Card.Body>
         </Card>
       </Col>
-    </Link>
+    </a>
   );
 }
 

@@ -29,11 +29,14 @@ const AppProvider = ({ children }) => {
   };
 
   // Dashboard Subjects
+  const getActivities = async () => {
+    setIsLoading(true);
+    const { data } = await axios.get('/api/activity');
+    setActivities(data);
+    setIsLoading(false);
+    return true;
+  };
   useEffect(() => {
-    const getActivities = async () => {
-      const { data } = await axios.get('/api/activity');
-      return setActivities(data);
-    };
     getActivities();
   }, []);
 
@@ -41,7 +44,6 @@ const AppProvider = ({ children }) => {
   const findActivity = async id => {
     setIsLoading(true);
     const { data } = await axios.get(`/api/activity/${id}`);
-
     if (data.length !== 0) {
       setActivity({ ...data[0] });
     }
@@ -115,6 +117,20 @@ const AppProvider = ({ children }) => {
     setSubject(e);
   };
 
+  // Create Activity Page
+  const saveActivity = async activity => {
+    const { data } = await axios.post(`/api/activity`, {
+      ...activity,
+    });
+    return data;
+    // return true;
+  };
+
+  const handleDeleteActivity = async id => {
+    const { data } = await axios.delete(`/api/activity/${id}`);
+    return data;
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -138,6 +154,9 @@ const AppProvider = ({ children }) => {
         handleStatus,
         handleSubject,
         getAllUsers,
+        getActivities,
+        saveActivity,
+        handleDeleteActivity,
       }}
     >
       {children}
