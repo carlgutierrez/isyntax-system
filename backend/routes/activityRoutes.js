@@ -9,7 +9,7 @@ const router = express.Router();
 // OK
 // READ ALL ACTIVITY
 router.get('/', async (req, res) => {
-  const activities = await Activity.find().select('-__v');
+  const activities = await Activity.find().select('-__v').sort({ _id: -1 });
   res.send(activities);
 });
 
@@ -40,6 +40,31 @@ router.post('/', validateMiddleware(validateActivity), async (req, res) => {
 
   await activity.save();
 
+  res.send(activity);
+});
+
+// OK
+// UPDATE ACTIVITY
+router.put('/:id', validateMiddleware(validateActivity), async (req, res) => {
+  const activity = await Activity.findByIdAndUpdate(
+    req.params.id,
+    {
+      title: req.body.title,
+      items: req.body.items,
+      dueDate: req.body.dueDate,
+      subject: req.body.subject,
+      status: req.body.status,
+      postedBy: req.body.postedBy,
+      instructions: req.body.instructions,
+      testCases: req.body.testCases,
+    },
+    { new: true }
+  );
+
+  if (!activity)
+    return res
+      .status(404)
+      .send('The activity with the given ID was not found.');
   res.send(activity);
 });
 

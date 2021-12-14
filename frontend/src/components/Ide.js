@@ -171,7 +171,13 @@ function Ide({ activity, role, id }) {
 
           {role === 'teacher' && (
             <>
-              <Button variant='warning' className='mx-2 mb-4'>
+              <Button
+                variant='warning'
+                className='mx-2 mb-4'
+                onClick={() =>
+                  (window.location.pathname = `/edit-activity/${id}`)
+                }
+              >
                 Edit
               </Button>
               <Button

@@ -3,6 +3,7 @@ import DashboardPage from './pages/DashboardPage';
 import ProfilePage from './pages/ProfilePage';
 import ActivityPage from './pages/ActivityPage';
 import CreatePage from './pages/CreatePage';
+import EditPage from './pages/EditPage';
 import LeaderboardPage from './pages/LeaderboardPage';
 import NotFound from './pages/NotFound';
 import { Switch, Route, Redirect } from 'react-router-dom';
@@ -23,6 +24,7 @@ function App() {
         <Route exact path='/activity/:_id' component={ActivityPage} />
         <Route exact path='/profile/:username' component={ProfilePage} />
         <ProtectedRoute exact path='/create-activity' component={CreatePage} />
+        <ProtectedRoute exact path='/edit-activity/:_id' component={EditPage} />
         <Route exact path='/not-found' component={NotFound} />
         <Redirect to='/not-found' />
       </Switch>

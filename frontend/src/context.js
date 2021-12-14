@@ -46,6 +46,8 @@ const AppProvider = ({ children }) => {
     const { data } = await axios.get(`/api/activity/${id}`);
     if (data.length !== 0) {
       setActivity({ ...data[0] });
+      setIsLoading(false);
+      return data;
     }
     setIsLoading(false);
     return true;
@@ -131,6 +133,15 @@ const AppProvider = ({ children }) => {
     return data;
   };
 
+  // Edit Activity Page
+  const updateActivity = async (activity, id) => {
+    const { data } = await axios.put(`/api/activity/${id}`, {
+      ...activity,
+    });
+    return data;
+    // return true;
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -157,6 +168,7 @@ const AppProvider = ({ children }) => {
         getActivities,
         saveActivity,
         handleDeleteActivity,
+        updateActivity,
       }}
     >
       {children}
