@@ -4,6 +4,8 @@ import ProfilePage from './pages/ProfilePage';
 import ActivityPage from './pages/ActivityPage';
 import CreatePage from './pages/CreatePage';
 import EditPage from './pages/EditPage';
+import StudentPage from './pages/StudentPage';
+import ResultPage from './pages/ResultPage';
 import LeaderboardPage from './pages/LeaderboardPage';
 import NotFound from './pages/NotFound';
 import { Switch, Route, Redirect } from 'react-router-dom';
@@ -25,6 +27,12 @@ function App() {
         <Route exact path='/profile/:username' component={ProfilePage} />
         <ProtectedRoute exact path='/create-activity' component={CreatePage} />
         <ProtectedRoute exact path='/edit-activity/:_id' component={EditPage} />
+        <ProtectedRoute
+          exact
+          path='/student-management'
+          component={StudentPage}
+        />
+        <ProtectedRoute exact path='/result/:_id' component={ResultPage} />
         <Route exact path='/not-found' component={NotFound} />
         <Redirect to='/not-found' />
       </Switch>

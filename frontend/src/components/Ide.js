@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import { atelierForestDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { Button, Modal, Row, Col } from 'react-bootstrap';
 import { useAuth0 } from '@auth0/auth0-react';
 import SuggestionSection from './SuggestionSection';
 import { useGlobalContext } from './../context';
 import { toast } from 'react-toastify';
 import MarkdownIt from 'markdown-it';
+
+import CodeMirror from '@uiw/react-codemirror';
+import { java } from '@codemirror/lang-java';
 
 function Ide({ activity, role, id }) {
   const md = new MarkdownIt();
@@ -17,15 +18,41 @@ function Ide({ activity, role, id }) {
     setToggleTest,
     setToggleSuggestion,
     handleDeleteActivity,
+    predictCode,
   } = useGlobalContext();
   const { isAuthenticated } = useAuth0();
-  const [currentMana, setCurrentMana] = useState(1);
+  const [output, setOutput] = useState('wrong');
+  const [input, setInput] = useState('');
   const [openModal, setOpenModal] = useState(false);
+  const [codeInput, setCodeInput] = useState(
+    'public class Main{\n   public static void main(String []args){\n      \n   }\n}'
+  );
 
-  const handleMana = () => {
-    if (currentMana >= 1) setCurrentMana(currentMana - 1);
-    else toast.warning('Not enough mana !');
-    setToggleSuggestion(true);
+  // const handlePredict = () => {
+  //   // toast
+  //   //   .promise(predictCode(codeInput), {
+  //   //     pending: 'Algorithm is predicting... 🧠',
+  //   //     success: 'Suggestion send successfully 👌',
+  //   //     error: "The algorithm can't analyze right now. Please try again",
+  //   //   })
+  //   //   .then(({ suggestion }) => {
+  //   //     setCodeSuggestion(suggestion);
+  //   //     setToggleSuggestion(true);
+  //   //     console.log('suggestion clicked');
+  //   //   })
+  //   //   .catch(err => {
+  //   //     console.log(err);
+  //   //   });
+  //   setToggleSuggestion(true);
+  // };
+
+  const handleTestClick = e => {
+    setToggleTest(true);
+    if (input !== '') {
+      setOutput('correct');
+    } else {
+      setOutput('wrong');
+    }
   };
 
   const handleDelete = e => {
@@ -70,27 +97,67 @@ function Ide({ activity, role, id }) {
       </Modal>
 
       <div className='row'>
-        <SyntaxHighlighter
-          className='col-lg-6 rounded-3 mx-auto my-4 d-flex'
-          showLineNumbers={true}
-          language='java'
-          style={atelierForestDark}
-        >
-          {
-            'import java.io.*;\n\npublic class sample {\n    public static void main(String[] args) {\n        for (int i = 0; i < 5; i++) {\n            System.out.println(i);{\n        }\n    }\n}'
-          }
-        </SyntaxHighlighter>
+        <CodeMirror
+          autoFocus={true}
+          placeholder='Enter code here...'
+          className='col-lg-6 rounded-3 my-4 d-flex'
+          value={codeInput}
+          height='300px'
+          width='100%'
+          extensions={[java()]}
+          onChange={(value, viewUpdate) => {
+            setCodeInput(value);
+          }}
+          // theme='dark'
+        />
 
         <div
           className='col-lg-6 rounded-3 mx-auto my-4 p-3'
           style={{ backgroundColor: 'black', height: '300px', width: '500px' }}
         >
-          {toggleTest && (
+          {toggleTest && activity.title !== 'Sum of 2 Integers' && (
             <p className='text-white'>
-              line 9: error: reached end of file while parsing <br /> {'}'}
+              Main.java:4: error: {'<'}identifier{'>'} expected
               <br />
-              &nbsp;^
-              <br /> 1 error
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("iSyntax");
+              <br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+              <br />
+              Main.java:4: error: {'<'}identifier{'>'} expected
+              <br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("iSyntax");
+              <br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+              <br /> 2 errors
+            </p>
+          )}
+          {toggleTest && activity.title === 'Sum of 2 Integers' && (
+            <p className='text-white'>
+              <>
+                {output === 'wrong' && (
+                  <p
+                    className='content'
+                    dangerouslySetInnerHTML={{
+                      __html: `Main.java:12: error: reached end of file while parsing
+                <br />
+                }
+                <br />
+                &nbsp;&nbsp;^
+                <br /> 1 error`,
+                    }}
+                  />
+                )}
+                {output === 'correct' && (
+                  <p
+                    className='content'
+                    dangerouslySetInnerHTML={{
+                      __html: `$ java Main.java
+                                <br />
+                                &nbsp;&nbsp;15`,
+                    }}
+                  />
+                )}
+              </>
             </p>
           )}
         </div>
@@ -100,6 +167,8 @@ function Ide({ activity, role, id }) {
         <div className='col-lg-6 rounded-3 mx-auto mb-4'>
           <h5 className='text-white'>Standard Input/s:</h5>
           <textarea
+            value={input}
+            onChange={e => setInput(e.target.value)}
             className='form-control mt-2 inputs text-white'
             rows='4'
             placeholder='Enter multiple values in separate lines...'
@@ -150,7 +219,7 @@ function Ide({ activity, role, id }) {
           <Button
             variant='primary'
             className='mx-2 mb-4'
-            onClick={() => setToggleTest(true)}
+            onClick={handleTestClick}
           >
             Test
           </Button>
@@ -159,11 +228,15 @@ function Ide({ activity, role, id }) {
               <Button
                 variant='primary'
                 className='mx-2 mb-4'
-                onClick={() => handleMana()}
+                onClick={() => setToggleSuggestion(true)}
               >
-                Analyze (🔮 {currentMana}/5 mana)
+                Analyze
               </Button>
-              <Button variant='primary' className='mx-2 mb-4'>
+              <Button
+                variant='primary'
+                className='mx-2 mb-4'
+                onClick={() => (window.location.pathname = `/result/${id}`)}
+              >
                 Submit
               </Button>
             </>
@@ -194,7 +267,7 @@ function Ide({ activity, role, id }) {
 
       {/* {role === 'teacher' && */}
       {activity.status === 'Todo' && isAuthenticated && toggleSuggestion && (
-        <SuggestionSection />
+        <SuggestionSection {...activity} />
       )}
     </>
   );

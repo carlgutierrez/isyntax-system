@@ -29,7 +29,7 @@ function InstructionSection({
         {moment(dateCreated).tz('Asia/Manila').format('D MMM')}
       </p>
       <p className='fw-bold'>
-        {items} points &nbsp;&#8226;&nbsp; {pageDueDate}
+        {items} items &nbsp;&#8226;&nbsp; {pageDueDate}
       </p>
 
       <div dangerouslySetInnerHTML={{ __html: result }} />

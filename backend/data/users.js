@@ -5,7 +5,7 @@ const users = [
     email: 'carlg6445@gmail.com',
     picture:
       'https://lh3.googleusercontent.com/a-/AOh14Gi1vOGE9mh8ayFZXrtDp4FhLF1aycj1TA4rfVh4EA=s500-c',
-    role: 'teacher',
+    role: 'student',
     totalScore: 10,
   },
   {

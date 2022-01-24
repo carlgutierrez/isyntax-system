@@ -6,6 +6,10 @@ import Joi from 'joi';
 import joiObjectid from 'joi-objectid';
 Joi.objectId = joiObjectid(Joi);
 
+// import { createProxyMiddleware } from 'http-proxy-middleware';
+// import httpProxy from 'http-proxy';
+// var proxy = httpProxy.createProxyServer(options); // See (†)
+
 // import loginRoutes from './routes/loginRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 // import badgeRoutes from './routes/badgeRoutes.js';
@@ -16,6 +20,14 @@ connectDB();
 
 const app = express();
 app.use(express.json());
+
+// app.use('/predict', (req, res) => {
+//   createProxyMiddleware({
+//     target: 'http://127.0.0.1:8080',
+//     changeOrigin: true,
+//     secure: false,
+//   });
+// });
 
 app.use('/api/users', userRoutes);
 // app.use('/api/badge', badgeRoutes);

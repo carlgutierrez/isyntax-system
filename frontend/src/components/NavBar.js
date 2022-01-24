@@ -12,7 +12,7 @@ const studentLinks = [
 
 const teacherLinks = [
   { label: 'Dashboard', link: '/dashboard' },
-  { label: 'Students', link: '/students' },
+  { label: 'Students', link: '/student-management' },
   { label: 'Leaderboard', link: '/leaderboard' },
 ];
 
