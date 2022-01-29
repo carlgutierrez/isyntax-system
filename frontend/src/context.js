@@ -53,13 +53,6 @@ const AppProvider = ({ children }) => {
     return true;
   };
 
-  const predictCode = async codeInput => {
-    const { data } = await axios.post(`/api/predict`, {
-      codeInput,
-    });
-    return data;
-  };
-
   // For Login
   const { user } = useAuth0();
   const createUser = async (name, email, picture) => {
@@ -166,7 +159,6 @@ const AppProvider = ({ children }) => {
         setToggleSuggestion,
         setToggleTest,
         findActivity,
-        predictCode,
         setIsLoading,
         findUserProfile,
         setActivities,

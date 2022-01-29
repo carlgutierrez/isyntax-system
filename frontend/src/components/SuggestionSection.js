@@ -2,7 +2,7 @@ import React from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import { java } from '@codemirror/lang-java';
 
-function SuggestionSection(activity) {
+function SuggestionSection({ codeSuggestion }) {
   // const javaText =
   //   'public class Main{\n     public static void main(String []args){\n       System.out.println("iSyntax ");\n     }\n}';
   // const x = prettier.format(javaText, {
@@ -11,10 +11,10 @@ function SuggestionSection(activity) {
   // });
   // console.log(x);
 
-  const suggestCode =
-    activity.title === 'Sum of 2 Integers'
-      ? 'import java.util.Scanner;\npublic class Main {\n  public static void main(String[] args) {\n    Scanner input = new Scanner(System.in);\n    int num1 = input.nextInt();\n    int num2 = input.nextInt();\n    System.out.println(sum + "" + num1);\n  }\n}'
-      : 'public class HelloWorld {\n  public static void main(String[] args) {\n    System.out.println("iSyntax ");\n  }\n}';
+  // const suggestCode =
+  //   activity.title === 'Sum of 2 Integers'
+  //     ? 'import java.util.Scanner;\npublic class Main {\n  public static void main(String[] args) {\n    Scanner input = new Scanner(System.in);\n    int num1 = input.nextInt();\n    int num2 = input.nextInt();\n    System.out.println(sum + "" + num1);\n  }\n}'
+  // : 'public class HelloWorld {\n  public static void main(String[] args) {\n    System.out.println("iSyntax ");\n  }\n}';
   return (
     <div className={'text-white'}>
       <h4 className='fw-bold'>Suggestion</h4>
@@ -25,7 +25,7 @@ function SuggestionSection(activity) {
         <CodeMirror
           // autoFocus={true}
           // placeholder='Enter code here...'
-          value={suggestCode}
+          value={codeSuggestion}
           height='300px'
           width='100%'
           extensions={[java()]}

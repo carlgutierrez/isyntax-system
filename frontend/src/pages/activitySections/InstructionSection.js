@@ -14,7 +14,7 @@ function InstructionSection({
 }) {
   const md = new MarkdownIt();
   const result = md.render(instructions);
-  console.log(instructions);
+  // console.log(instructions);
 
   const pageDueDate =
     dueDate === 'noDueDate'

@@ -9,6 +9,8 @@ import MarkdownIt from 'markdown-it';
 import CodeMirror from '@uiw/react-codemirror';
 import { java } from '@codemirror/lang-java';
 
+import axios from 'axios';
+
 function Ide({ activity, role, id }) {
   const md = new MarkdownIt();
 
@@ -18,41 +20,100 @@ function Ide({ activity, role, id }) {
     setToggleTest,
     setToggleSuggestion,
     handleDeleteActivity,
-    predictCode,
   } = useGlobalContext();
   const { isAuthenticated } = useAuth0();
-  const [output, setOutput] = useState('wrong');
+  const [codeSuggestion, setCodeSuggestion] = useState();
   const [input, setInput] = useState('');
   const [openModal, setOpenModal] = useState(false);
   const [codeInput, setCodeInput] = useState(
-    'public class Main{\n   public static void main(String []args){\n      \n   }\n}'
+    'public class Main{\n   public static void main(String []args){\n     \n   }\n}'
   );
+  const [jdoodleResult, setJdoodleResult] = useState('');
 
-  // const handlePredict = () => {
-  //   // toast
-  //   //   .promise(predictCode(codeInput), {
-  //   //     pending: 'Algorithm is predicting... 🧠',
-  //   //     success: 'Suggestion send successfully 👌',
-  //   //     error: "The algorithm can't analyze right now. Please try again",
-  //   //   })
-  //   //   .then(({ suggestion }) => {
-  //   //     setCodeSuggestion(suggestion);
-  //   //     setToggleSuggestion(true);
-  //   //     console.log('suggestion clicked');
-  //   //   })
-  //   //   .catch(err => {
-  //   //     console.log(err);
-  //   //   });
-  //   setToggleSuggestion(true);
-  // };
+  const predictCode = async () => {
+    const { data } = await axios.post(
+      `https://cors-anywhere.herokuapp.com/http://18.140.65.58:8080/predict`,
+      {
+        codeInput: codeInput,
+      },
+      {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json;charset=UTF-8',
+        },
+      }
+    );
+
+    const params = new URLSearchParams();
+    params.append('code', data.suggestion.toString());
+
+    const formattedJava = await axios.post(
+      `https://cors-anywhere.herokuapp.com/https://tools.tutorialspoint.com/format_javascript.php`,
+      params,
+      {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        },
+      }
+    );
+
+    return formattedJava.data;
+  };
+
+  const handlePredict = () => {
+    toast
+      .promise(predictCode(codeInput), {
+        pending: 'Model is predicting... 🧠',
+        success: 'Suggestion send successfully 👌',
+        error: "The model can't analyze right now. Please try again",
+      })
+      .then(({ code }) => {
+        setCodeSuggestion(code);
+        setToggleSuggestion(true);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  const executeCode = async () => {
+    const { data } = await axios.post(
+      `https://cors-anywhere.herokuapp.com/https://api.jdoodle.com/v1/execute`,
+      {
+        clientId: process.env.REACT_APP_JDOODLE_CLIENT_ID,
+        clientSecret: process.env.REACT_APP_JDOODLE_CLIENT_SECRET,
+        script: codeInput,
+        stdin: input,
+        language: 'java',
+        versionIndex: '3',
+      },
+      {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json;charset=UTF-8',
+        },
+      }
+    );
+
+    return data;
+  };
 
   const handleTestClick = e => {
     setToggleTest(true);
-    if (input !== '') {
-      setOutput('correct');
-    } else {
-      setOutput('wrong');
-    }
+
+    toast
+      .promise(executeCode(codeInput), {
+        pending: 'Code is compiling...',
+        success: 'Code successfully compiled',
+        error: "Compiler can't compile right now. Please try again",
+      })
+      .then(({ output }) => {
+        setJdoodleResult(output);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   const handleDelete = e => {
@@ -108,58 +169,13 @@ function Ide({ activity, role, id }) {
           onChange={(value, viewUpdate) => {
             setCodeInput(value);
           }}
-          // theme='dark'
         />
 
         <div
           className='col-lg-6 rounded-3 mx-auto my-4 p-3'
           style={{ backgroundColor: 'black', height: '300px', width: '500px' }}
         >
-          {toggleTest && activity.title !== 'Sum of 2 Integers' && (
-            <p className='text-white'>
-              Main.java:4: error: {'<'}identifier{'>'} expected
-              <br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("iSyntax");
-              <br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
-              <br />
-              Main.java:4: error: {'<'}identifier{'>'} expected
-              <br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("iSyntax");
-              <br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
-              <br /> 2 errors
-            </p>
-          )}
-          {toggleTest && activity.title === 'Sum of 2 Integers' && (
-            <p className='text-white'>
-              <>
-                {output === 'wrong' && (
-                  <p
-                    className='content'
-                    dangerouslySetInnerHTML={{
-                      __html: `Main.java:12: error: reached end of file while parsing
-                <br />
-                }
-                <br />
-                &nbsp;&nbsp;^
-                <br /> 1 error`,
-                    }}
-                  />
-                )}
-                {output === 'correct' && (
-                  <p
-                    className='content'
-                    dangerouslySetInnerHTML={{
-                      __html: `$ java Main.java
-                                <br />
-                                &nbsp;&nbsp;15`,
-                    }}
-                  />
-                )}
-              </>
-            </p>
-          )}
+          {toggleTest && <pre className='text-white'>{jdoodleResult}</pre>}
         </div>
       </div>
 
@@ -228,7 +244,8 @@ function Ide({ activity, role, id }) {
               <Button
                 variant='primary'
                 className='mx-2 mb-4'
-                onClick={() => setToggleSuggestion(true)}
+                // onClick={() => setToggleSuggestion(true)}
+                onClick={handlePredict}
               >
                 Analyze
               </Button>
@@ -267,7 +284,7 @@ function Ide({ activity, role, id }) {
 
       {/* {role === 'teacher' && */}
       {activity.status === 'Todo' && isAuthenticated && toggleSuggestion && (
-        <SuggestionSection {...activity} />
+        <SuggestionSection codeSuggestion={codeSuggestion} />
       )}
     </>
   );
