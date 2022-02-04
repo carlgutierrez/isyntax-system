@@ -1,9 +1,10 @@
 import { useEffect, useMemo } from 'react';
-import { Container } from 'react-bootstrap';
+import { Container, Modal } from 'react-bootstrap';
 import { Redirect, useParams, useLocation } from 'react-router-dom';
 import Loading from '../components/Loading';
 import { useGlobalContext } from '../context';
 import TestCaseSection from './resultSections/TestCaseSection';
+import NewBadgeAcquired from '../components/NewBadgeAcquired';
 
 function useQuery() {
   const { search } = useLocation();
@@ -13,7 +14,9 @@ function useQuery() {
 
 function ResultPage(props) {
   const {
-    user,
+    getUserBadge,
+    checkBadgeAcquired,
+    newBadgeAcquired,
     submissionResult,
     getSubmission,
     activity,
@@ -22,10 +25,11 @@ function ResultPage(props) {
   } = useGlobalContext();
   const { _id } = useParams();
   const query = useQuery();
-  console.log(query.get('email'));
   useEffect(() => {
     findActivity(_id);
     getSubmission(_id, query.get('email'));
+    getUserBadge(query.get('email'));
+    checkBadgeAcquired(_id, query.get('email'));
   }, []);
 
   if (isLoading)
@@ -48,6 +52,24 @@ function ResultPage(props) {
 
   return (
     <Container className='text-white'>
+      {newBadgeAcquired === 'completedFirstActivity' && (
+        <NewBadgeAcquired
+          name={'Completed First Activity'}
+          picture={'/images/completedFirstActivity.svg'}
+        />
+      )}
+      {newBadgeAcquired === 'completedThreeActivities' && (
+        <NewBadgeAcquired
+          name={'Completed Three Activities'}
+          picture={'/images/completedThreeActivities.svg'}
+        />
+      )}
+      {newBadgeAcquired === 'aceAnActivity' && (
+        <NewBadgeAcquired
+          name={'Ace an Activity'}
+          picture={'/images/aceAnActivity.svg'}
+        />
+      )}
       <TestCaseSection
         activity={activity}
         submissionResultObject={submissionResult}

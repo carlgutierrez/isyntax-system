@@ -25,6 +25,9 @@ const AppProvider = ({ children }) => {
   const [teacherSubjects, setTeacherSubjects] = useState([]);
   const [allSubmissions, setAllSubmissions] = useState([]);
 
+  const [userBadges, setUserBadges] = useState([]);
+  const [newBadgeAcquired, setNewBadgeAcquired] = useState('');
+
   // Teacher Result Page
   const getTeacherSubjects = async () => {
     setIsLoading(true);
@@ -158,6 +161,12 @@ const AppProvider = ({ children }) => {
     });
     setSubjects(['All']);
 
+    await axios.post('/api/badge', {
+      userEmail: email,
+      badges: [],
+    });
+    setUserBadges([]);
+
     return setUserProfile({
       ...data,
     });
@@ -237,6 +246,82 @@ const AppProvider = ({ children }) => {
     });
     return data;
     // return true;
+  };
+
+  // Results Page
+  const getUserBadge = async email => {
+    const { data } = await axios.get(`/api/badge/${email}`);
+    setUserBadges(data);
+    return true;
+  };
+
+  const checkBadgeAcquired = async (activityID, email) => {
+    // completedFirstActivity
+    const { data } = await axios.get('/api/submission');
+    let allSubmissionsArray = [];
+    for (let i = 0; i < data.length; i++) {
+      allSubmissionsArray.push(data[i].userEmail);
+    }
+    if (!allSubmissionsArray.includes(email)) {
+      const userBadgesQuery = await axios.get(`/api/badge/${email}`);
+      if (!userBadgesQuery.data.includes('completedFirstActivity')) {
+        const newBadges = [...userBadgesQuery.data, 'completedFirstActivity'];
+        axios.put(`/api/badge/${email}`, {
+          userEmail: email,
+          badges: newBadges,
+        });
+        setUserBadges(newBadges);
+        setNewBadgeAcquired('completedFirstActivity');
+        return true;
+      }
+    }
+
+    // completedThreeActivities
+    let activityCount = 0;
+    for (let i = 0; i < allSubmissionsArray.length; i++) {
+      if (allSubmissionsArray[i] === email) activityCount++;
+    }
+    console.log('allSubmissionsArray', allSubmissionsArray);
+    console.log('activityCount', activityCount);
+    if (activityCount === 3) {
+      const userBadgesQuery = await axios.get(`/api/badge/${email}`);
+      if (!userBadgesQuery.data.includes('completedThreeActivities')) {
+        const userBadgesQuery = await axios.get(`/api/badge/${email}`);
+        const newBadges = [...userBadgesQuery.data, 'completedThreeActivities'];
+        axios.put(`/api/badge/${email}`, {
+          userEmail: email,
+          badges: newBadges,
+        });
+        setUserBadges(newBadges);
+        setNewBadgeAcquired('completedThreeActivities');
+        return true;
+      }
+    }
+
+    // aceAnActivity
+    const totalScoreQuery = await axios.get(
+      `/api/submission/${activityID}/${email}`
+    );
+    const totalScore = totalScoreQuery.data[0].rubricScore.reduce(
+      (partialSum, a) => partialSum + a,
+      0
+    );
+
+    const activityTotalQuery = await axios.get(`/api/activity/${activityID}`);
+    // const activityObj = await axios.get(`/api/activity/${activity._id}`)
+    if (totalScore === activityTotalQuery.data[0].items) {
+      const userBadgesQuery = await axios.get(`/api/badge/${email}`);
+      if (!userBadgesQuery.data.includes('aceAnActivity')) {
+        const newBadges = [...userBadgesQuery.data, 'aceAnActivity'];
+        axios.put(`/api/badge/${email}`, {
+          userEmail: email,
+          badges: newBadges,
+        });
+        setUserBadges(newBadges);
+        setNewBadgeAcquired('aceAnActivity');
+        return true;
+      }
+    }
   };
 
   // Submit Activity Page
@@ -333,6 +418,10 @@ const AppProvider = ({ children }) => {
         getUserSubjects,
         userActivities,
         setUserActivities,
+        newBadgeAcquired,
+        userBadges,
+        checkBadgeAcquired,
+        getUserBadge,
       }}
     >
       {children}

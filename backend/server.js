@@ -9,7 +9,7 @@ Joi.objectId = joiObjectid(Joi);
 
 // import loginRoutes from './routes/loginRoutes.js';
 import userRoutes from './routes/userRoutes.js';
-// import badgeRoutes from './routes/badgeRoutes.js';
+import badgeRoutes from './routes/badgeRoutes.js';
 import activityRoutes from './routes/activityRoutes.js';
 import submissionRoutes from './routes/submissionRoutes.js';
 import subjectRoutes from './routes/subjectRoutes.js';
@@ -22,7 +22,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/api/users', userRoutes);
-// app.use('/api/badge', badgeRoutes);
+app.use('/api/badge', badgeRoutes);
 app.use('/api/activity', activityRoutes);
 app.use('/api/submission', submissionRoutes);
 app.use('/api/subject', subjectRoutes);

@@ -10,10 +10,12 @@ import { useGlobalContext } from './../context';
 import Loading from './../components/Loading';
 
 function ProfilePage() {
-  const { isLoading, profileInfo, findUserProfile } = useGlobalContext();
+  const { isLoading, profileInfo, findUserProfile, getUserBadge } =
+    useGlobalContext();
   const { username } = useParams();
   useEffect(() => {
     findUserProfile(`${username}@gmail.com`);
+    getUserBadge(`${username}@gmail.com`);
   }, []);
 
   if (isLoading)
@@ -37,8 +39,8 @@ function ProfilePage() {
         <div class='col-lg-8'>
           <div class='ps-lg-1-6 ps-xl-5'>
             <BadgesSection />
-            <SubmissionSection />
-            <PointsSection />
+            {/* <SubmissionSection /> */}
+            {/* <PointsSection /> */}
           </div>
         </div>
       </Row>

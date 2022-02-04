@@ -4,20 +4,13 @@ import Joi from 'joi';
 const Badge = mongoose.model(
   'Badge',
   new mongoose.Schema({
-    name: {
+    userEmail: {
       type: String,
       required: true,
-      // unique: true,
+      unique: true,
     },
-    // star: {
-    //   type: Number,
-    //   min: 1,
-    //   max: 5,
-    //   default: 1,
-    // },
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+    badges: {
+      type: Array,
       required: true,
     },
   })
@@ -26,8 +19,8 @@ const Badge = mongoose.model(
 // JOI VALIDATION
 function validateBadge(badge) {
   const schema = Joi.object({
-    name: Joi.string().required(),
-    user: Joi.required(),
+    userEmail: Joi.string().required().email(),
+    badges: Joi.array().required(),
   });
 
   return schema.validate(badge);

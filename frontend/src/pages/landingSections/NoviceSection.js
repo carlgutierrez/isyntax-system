@@ -15,6 +15,7 @@ function NoviceSection(props) {
             <p className='lead my-4 text-center'>
               Begin tracking progress with the coding heatmap on the profile
               page, which depicts previous and prospective coding efforts.
+              (coming soon)
             </p>
             <div className='text-center'>
               <img
