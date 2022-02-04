@@ -151,6 +151,13 @@ const AppProvider = ({ children }) => {
       email,
       picture,
     });
+
+    await axios.post('/api/subject', {
+      userEmail: email,
+      subjects: ['All'],
+    });
+    setSubjects(['All']);
+
     return setUserProfile({
       ...data,
     });
