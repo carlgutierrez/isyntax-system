@@ -13,8 +13,9 @@ const AppProvider = ({ children }) => {
   const [userProfile, setUserProfile] = useState({});
   const [status, setStatus] = useState('Todo');
   const [subject, setSubject] = useState('All');
-  const subjects = ['All', 'ITEC 101', 'ITEC 102', 'ITEC 103'];
+  const [subjects, setSubjects] = useState([]);
   const [activities, setActivities] = useState([]);
+  const [userActivities, setUserActivities] = useState([]);
   const [activity, setActivity] = useState({});
   const [toggleSuggestion, setToggleSuggestion] = useState(false);
   const [toggleTest, setToggleTest] = useState(false);
@@ -57,6 +58,56 @@ const AppProvider = ({ children }) => {
   };
 
   // Dashboard Subjects
+  const findSubjectCode = classCodeInput => {
+    let allSubject = activities.filter(activity => {
+      return activity.subject === classCodeInput;
+    });
+
+    // Check if user is already enrolled
+    allSubject = allSubject.filter(activity => {
+      return !subjects.includes(activity.subject);
+    });
+
+    if (allSubject.length !== 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const getUserSubjects = async () => {
+    setIsLoading(true);
+    const { data } = await axios.get(`/api/subject/${user.email}`);
+    setSubjects(data);
+
+    const subjectActivities = await axios.get('/api/activity');
+    const userFinishedActivities = await axios.get(
+      `/api/submission/${user.email}`
+    );
+
+    setUserActivities(
+      subjectActivities.data.filter(activity => {
+        return (
+          !userFinishedActivities.data.includes(activity._id.toString()) &&
+          data.includes(activity.subject)
+        );
+      })
+    );
+    setIsLoading(false);
+    return true;
+  };
+
+  const addClassCode = async classCodeInput => {
+    const newSubjects = [...subjects, classCodeInput];
+    const { data } = axios.put(`/api/subject/${user.email}`, {
+      userEmail: user.email,
+      subjects: newSubjects,
+    });
+    console.log('new subjects', newSubjects);
+
+    return true;
+  };
+
   const getActivities = async () => {
     setIsLoading(true);
     const { data } = await axios.get('/api/activity');
@@ -270,6 +321,11 @@ const AppProvider = ({ children }) => {
         postSubmission,
         getSubmission,
         getUserSubmission,
+        findSubjectCode,
+        addClassCode,
+        getUserSubjects,
+        userActivities,
+        setUserActivities,
       }}
     >
       {children}

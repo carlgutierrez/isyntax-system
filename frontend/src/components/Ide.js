@@ -179,7 +179,7 @@ function Ide({ activity, id, userFinished, userProfile }) {
       rubricScore[0] = Math.round(activity.items * 0.4 * 0.66);
     }
 
-    // PUCTUATION
+    // PUNCTUATION
     function getDateDiff(dueDate, dateSubmitted) {
       return dueDate.diff(dateSubmitted, 'days');
     }
@@ -191,7 +191,7 @@ function Ide({ activity, id, userFinished, userProfile }) {
 
     if (punctuation === 0) {
       rubricScore[1] = Math.round(activity.items * 0.4 * 0.66);
-    } else if (testCasePassed < 0) {
+    } else if (punctuation < 0) {
       // If negative = late
       rubricScore[1] = 0;
     } else {

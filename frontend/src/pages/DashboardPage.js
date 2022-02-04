@@ -18,40 +18,48 @@ function DashboardPage() {
     isLoading,
     getUserSubmission,
     userFinished,
+    getUserSubjects,
+    userActivities,
+    setUserActivities,
   } = useGlobalContext();
-
-  let [dashboardActivities, setDashboardActivities] = useState(activities);
 
   useEffect(() => {
     getActivities();
     getUserSubmission();
+    getUserSubjects();
   }, []);
 
   useEffect(() => {
     if (subject === 'All') {
-      setDashboardActivities(
+      setUserActivities(
         activities.filter(activity => {
-          // return activity.status === status;
-          if (status === 'Finished') {
-            return userFinished.includes(activity._id.toString());
-          } else {
-            return !userFinished.includes(activity._id.toString());
-          }
-        })
-      );
-    } else {
-      setDashboardActivities(
-        activities.filter(activity => {
-          // return activity.status === status && activity.subject === subject;
           if (status === 'Finished') {
             return (
               userFinished.includes(activity._id.toString()) &&
-              activity.subject === subject
+              subjects.includes(activity.subject)
             );
           } else {
             return (
               !userFinished.includes(activity._id.toString()) &&
-              activity.subject === subject
+              subjects.includes(activity.subject)
+            );
+          }
+        })
+      );
+    } else {
+      setUserActivities(
+        activities.filter(activity => {
+          if (status === 'Finished') {
+            return (
+              userFinished.includes(activity._id.toString()) &&
+              activity.subject === subject &&
+              subjects.includes(activity.subject)
+            );
+          } else {
+            return (
+              !userFinished.includes(activity._id.toString()) &&
+              activity.subject === subject &&
+              subjects.includes(activity.subject)
             );
           }
         })
@@ -81,7 +89,7 @@ function DashboardPage() {
         {/* <CardGroup style={{ maxWidth: '100%' }}> */}
         <CardGroup className='justify-content-center'>
           <Row xs={1} md={3} className='g-4' style={{ width: '100%' }}>
-            {dashboardActivities.map((activity, index) => (
+            {userActivities.map((activity, index) => (
               <CardComponent {...activity} key={index} />
             ))}
           </Row>

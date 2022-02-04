@@ -12,6 +12,7 @@ import userRoutes from './routes/userRoutes.js';
 // import badgeRoutes from './routes/badgeRoutes.js';
 import activityRoutes from './routes/activityRoutes.js';
 import submissionRoutes from './routes/submissionRoutes.js';
+import subjectRoutes from './routes/subjectRoutes.js';
 
 dotenv.config();
 connectDB();
@@ -24,6 +25,7 @@ app.use('/api/users', userRoutes);
 // app.use('/api/badge', badgeRoutes);
 app.use('/api/activity', activityRoutes);
 app.use('/api/submission', submissionRoutes);
+app.use('/api/subject', subjectRoutes);
 
 app.get('/', (req, res) => {
   res.send('API is running....');

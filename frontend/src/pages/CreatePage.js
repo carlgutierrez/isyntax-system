@@ -148,11 +148,11 @@ function CreatePage() {
           {/* SUBJECT */}
           <Col md>
             <Form.Group className='mb-3 text-white' controlId='formBasicItems'>
-              <Form.Label>Subject</Form.Label>
+              <Form.Label>Class</Form.Label>
               <Form.Control
                 required
                 type='text'
-                placeholder='Subject Code'
+                placeholder='Class Code'
                 onChange={e =>
                   setCreateActivity({
                     ...createActivity,

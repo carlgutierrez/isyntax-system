@@ -2,9 +2,11 @@ import dotenv from 'dotenv';
 import users from './data/users.js';
 import badges from './data/badges.js';
 import activities from './data/activities.js';
+import subjects from './data/subjects.js';
 import { User } from './models/userModel.js';
 import { Badge } from './models/badgeModel.js';
 import { Activity } from './models/activityModel.js';
+import { Subject } from './models/subjectModel.js';
 import connectDB from './config/db.js';
 
 dotenv.config();
@@ -16,6 +18,7 @@ const importData = async () => {
     await User.deleteMany();
     // await Badge.deleteMany();
     await Activity.deleteMany();
+    await Subject.deleteMany();
 
     const createdUsers = await User.insertMany(users);
 
@@ -33,6 +36,7 @@ const importData = async () => {
     // await Badge.insertMany(adminBadge);
     // await Badge.insertMany(userBadge);
     await Activity.insertMany(activities);
+    await Subject.insertMany(subjects);
 
     console.log('Data Imported!');
     process.exit();
@@ -47,6 +51,7 @@ const destroyData = async () => {
     await User.deleteMany();
     await Badge.deleteMany();
     await Activity.deleteMany();
+    await Subject.deleteMany();
 
     console.log('Data Destroyed!');
     process.exit();
