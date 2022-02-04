@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import InstructionSection from './activitySections/InstructionSection';
 import Ide from './../components/Ide';
@@ -6,6 +6,8 @@ import { useGlobalContext } from './../context';
 import { Redirect, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import Loading from './../components/Loading';
+
+import axios from 'axios';
 
 function ActivityPage() {
   const {
@@ -17,11 +19,23 @@ function ActivityPage() {
     setToggleTest,
   } = useGlobalContext();
 
+  const [userFinished, setUserFinished] = useState([]);
+  const getUserSubmission = async () => {
+    const { data } = await axios.get(`/api/submission`);
+    setUserFinished(
+      data.filter(submission => {
+        return submission.activityID === _id.toString();
+      })
+    );
+    return true;
+  };
+
   const { _id } = useParams();
   useEffect(() => {
     findActivity(_id);
     setToggleSuggestion(false);
     setToggleTest(false);
+    getUserSubmission();
   }, []);
 
   if (isLoading)
@@ -47,7 +61,14 @@ function ActivityPage() {
         </h4>
       </a>
       <InstructionSection {...activity} />
-      <Ide activity={activity} role={userProfile.role} id={_id} />
+      <Ide
+        activity={activity}
+        id={_id}
+        userFinished={userFinished}
+        // role={userProfile.role}
+        // email={userProfile.email}
+        userProfile={userProfile}
+      />
     </Container>
   );
 }

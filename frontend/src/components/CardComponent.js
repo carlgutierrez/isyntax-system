@@ -27,11 +27,11 @@ function CardComponent(activity) {
           <Card.Body className='text-center'>
             <Card.Title className='fs-4'>{activity.title}</Card.Title>
             <Card.Text className='text-muted'>
-              {activity.postedBy},{' '}
+              {activity.postedByName},{' '}
               {moment(activity.dateCreated).tz('Asia/Manila').format('D MMM')}
             </Card.Text>
             <Card.Text className='fs-6 text-muted'>
-              {activity.items} items
+              {activity.items} points
             </Card.Text>
             <hr />
             <Card.Text>{dueDate}</Card.Text>

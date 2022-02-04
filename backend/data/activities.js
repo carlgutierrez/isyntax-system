@@ -9,7 +9,8 @@ const activities = [
     subject: 'ITEC 101',
     status: 'Todo',
     // TODO _id
-    postedBy: 'Carl John Gutierrez',
+    postedBy: 'carlg6445@gmail.com',
+    postedByName: 'Carl John Gutierrez',
     instructions:
       '#### Instruction\nWrite a program which calculates the cube of a given integer x.\n\n#### Input\nAn integer x is given in a line.\n\n#### Output\nPrint the cube of x in a line.\n\n#### Sample Input 1\n```\n2\n```\n#### Sample Output 1\n```\n8\n```',
     testCases: [
@@ -36,7 +37,8 @@ const activities = [
     dueDate: 'noDueDate',
     subject: 'ITEC 102',
     status: 'Todo',
-    postedBy: 'Carl John Gutierrez',
+    postedBy: 'carlg6445@gmail.com',
+    postedByName: 'Carl John Gutierrez',
     instructions:
       '#### **Instruction**\nWrite a code that returns the sum of the 2 inputted integers.\n##### Sample Input 1\n```\n6\n9\n```\n##### Sample Output 1\n```\n15\n```\n##### Sample Input 2\n```\n106\n56\n```\n##### Sample Output 2\n```\n162\n```',
     testCases: [
@@ -63,7 +65,8 @@ const activities = [
     dueDate: '2022-01-03T07:00:00.000Z',
     subject: 'ITEC 103',
     status: 'Todo',
-    postedBy: 'Carl John Gutierrez',
+    postedBy: 'carlg6445@gmail.com',
+    postedByName: 'Carl John Gutierrez',
     instructions:
       "#### **Instruction**\nWrite a code that returns 'even' or 'odd' based on what type is the number inputted.\n##### Sample Input 1\n```\n3\n```\n##### Sample Output 1\n```\nodd\n```\n##### Sample Input 2\n```\n10\n```\n##### Sample Output 2\n```\neven\n```",
     testCases: [
@@ -89,8 +92,9 @@ const activities = [
     items: 100,
     dueDate: '2021-12-25T07:00:00.000Z',
     subject: 'ITEC 103',
-    status: 'Finished',
-    postedBy: 'Carl John Gutierrez',
+    status: 'Todo',
+    postedBy: 'carlg6445@gmail.com',
+    postedByName: 'Carl John Gutierrez',
     instructions:
       "#### **Instruction**\nWrite a code that returns 'even' or 'odd' based on what type is the number inputted.\n##### Sample Input 1\n```\n3\n```\n##### Sample Output 1\n```\nodd\n```\n##### Sample Input 2\n```\n10\n```\n##### Sample Output 2\n```\neven\n```",
     testCases: [
@@ -116,8 +120,9 @@ const activities = [
     items: 75,
     dueDate: '2021-12-25T07:00:00.000Z',
     subject: 'ITEC 103',
-    status: 'Finished',
-    postedBy: 'Carl John Gutierrez',
+    status: 'Todo',
+    postedBy: 'carlg6445@gmail.com',
+    postedByName: 'Carl John Gutierrez',
     instructions:
       "#### **Instruction**\nWrite a code that returns 'even' or 'odd' based on what type is the number inputted.\n##### Sample Input 1\n```\n3\n```\n##### Sample Output 1\n```\nodd\n```\n##### Sample Input 2\n```\n10\n```\n##### Sample Output 2\n```\neven\n```",
     testCases: [
@@ -144,7 +149,8 @@ const activities = [
     dueDate: 'noDueDate',
     subject: 'ITEC 102',
     status: 'Todo',
-    postedBy: 'Carl John Gutierrez',
+    postedBy: 'carlg6445@gmail.com',
+    postedByName: 'Carl John Gutierrez',
     instructions:
       '#### **Instruction**\nWrite a code that returns the sum of the 2 inputted integers.\n##### Sample Input 1\n```\n6\n9\n```\n##### Sample Output 1\n```\n15\n```\n##### Sample Input 2\n```\n106\n56\n```\n##### Sample Output 2\n```\n162\n```',
     testCases: [
@@ -172,7 +178,8 @@ const activities = [
     subject: 'ITEC 101',
     status: 'Todo',
     // TODO _id
-    postedBy: 'Carl John Gutierrez',
+    postedBy: 'carlg6445@gmail.com',
+    postedByName: 'Carl John Gutierrez',
     instructions:
       '#### Instruction\nWrite a program which prints "iSyntax" to standard output.\n\n#### Input\nNone\n\n#### Output\nA string of that says "iSyntax"\n\n#### Sample Input 1\n```\nNone\n```\n#### Sample Output 1\n```\niSyntax\n```',
     testCases: [

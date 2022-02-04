@@ -22,6 +22,14 @@ router.get('/:id', validateObjectId, async (req, res) => {
   res.send(activity);
 });
 
+// FIND TEACHER ACTIVITY BY EMAIL
+router.get('/teacher/:email', async (req, res) => {
+  const activity = await Activity.find({
+    postedBy: req.params.email.toString(),
+  }).select('-__v');
+  res.send(activity);
+});
+
 // OK
 // ADD NEW ACTIVITY
 router.post('/', validateMiddleware(validateActivity), async (req, res) => {
@@ -34,6 +42,7 @@ router.post('/', validateMiddleware(validateActivity), async (req, res) => {
     subject: req.body.subject,
     status: req.body.status,
     postedBy: req.body.postedBy,
+    postedByName: req.body.postedByName,
     instructions: req.body.instructions,
     testCases: req.body.testCases,
   });

@@ -9,7 +9,7 @@ function InstructionSection({
   dateCreated,
   subject,
   status,
-  postedBy,
+  postedByName,
   instructions,
 }) {
   const md = new MarkdownIt();
@@ -25,11 +25,11 @@ function InstructionSection({
     <div className='mx-auto text-white '>
       <h1 className='text-primary text-center'>{title}</h1>
       <p className='fw-bold'>
-        {postedBy} &nbsp;&#8226; &nbsp;{' '}
+        {postedByName} &nbsp;&#8226; &nbsp;{' '}
         {moment(dateCreated).tz('Asia/Manila').format('D MMM')}
       </p>
       <p className='fw-bold'>
-        {items} items &nbsp;&#8226;&nbsp; {pageDueDate}
+        {items} points &nbsp;&#8226;&nbsp; {pageDueDate}
       </p>
 
       <div dangerouslySetInnerHTML={{ __html: result }} />

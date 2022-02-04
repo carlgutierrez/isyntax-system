@@ -1,171 +1,33 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
 
-function StudentTable() {
-  function createData(name, act1, act2, act3, act4, act5) {
-    return {
-      name,
-      act1,
-      act2,
-      act3,
-      act4,
-      act5,
-    };
+function StudentTable({ users, teacherSubjects, allSubmissions }) {
+  const teacherSubjectsID = [];
+  for (const index in teacherSubjects) {
+    teacherSubjectsID.push(teacherSubjects[index]._id);
   }
 
-  let userArray = [
-    createData(
-      'Andrew Baines Bernard',
-      'Submitted',
-      'Pending',
-      'Pending',
-      'Late',
-      'Pending'
-    ),
-    createData(
-      'Angela Noelle Schrute',
-      'Pending',
-      'Submitted',
-      'Late',
-      'Pending',
-      'Pending'
-    ),
-    createData(
-      'Creed Bratton',
-      'Pending',
-      'Pending',
-      'Pending',
-      'Pending',
-      'Pending'
-    ),
-    createData(
-      'Darryl Philbin',
-      'Pending',
-      'Late',
-      'Pending',
-      'Pending',
-      'Pending'
-    ),
-    createData(
-      'Dwight Kurt Schrute III',
-      'Pending',
-      'Pending',
-      'Pending',
-      'Pending',
-      'Pending'
-    ),
-    createData(
-      'James Halpert',
-      'Late',
-      'Pending',
-      'Pending',
-      'Submitted',
-      'Pending'
-    ),
-    createData(
-      'Kelly Erin Hannon',
-      'Submitted',
-      'Pending',
-      'Submitted',
-      'Pending',
-      'Pending'
-    ),
-    createData(
-      'Kelly Rajnigandha Kapoor',
-      'Pending',
-      'Pending',
-      'Pending',
-      'Pending',
-      'Pending'
-    ),
-    createData(
-      'Kevin Malone',
-      'Pending',
-      'Submitted',
-      'Pending',
-      'Pending',
-      'Pending'
-    ),
-    createData(
-      'Meredith Palmer',
-      'Pending',
-      'Pending',
-      'Pending',
-      'Late',
-      'Pending'
-    ),
-    createData(
-      'Michael Gary Scott',
-      'Pending',
-      'Pending',
-      'Pending',
-      'Pending',
-      'Submitted'
-    ),
-    createData(
-      'Oscar Martinez',
-      'Pending',
-      'Pending',
-      'Submitted',
-      'Pending',
-      'Pending'
-    ),
-    createData(
-      'Pamela Morgan Halpert',
-      'Late',
-      'Pending',
-      'Pending',
-      'Pending',
-      'Pending'
-    ),
-    createData(
-      'Phyllis Vance',
-      'Pending',
-      'Submitted',
-      'Pending',
-      'Pending',
-      'Pending'
-    ),
-    createData(
-      'Ryan Bailey Howard',
-      'Pending',
-      'Pending',
-      'Submitted',
-      'Pending',
-      'Pending'
-    ),
-    createData(
-      'Stanley Hudson',
-      'Pending',
-      'Pending',
-      'Pending',
-      'Submitted',
-      'Pending'
-    ),
-    createData(
-      'Toby Flenderson',
-      'Pending',
-      'Pending',
-      'Late',
-      'Pending',
-      'Pending'
-    ),
-  ];
+  const teacherAllSubmissions = [];
+  for (const index in allSubmissions) {
+    teacherAllSubmissions.push({
+      userEmail: allSubmissions[index].userEmail,
+      activityID: allSubmissions[index].activityID,
+      rubricScore: allSubmissions[index].rubricScore,
+    });
+  }
 
   return (
     <Table bordered hover variant='dark'>
       <thead className='text-center'>
         <tr>
           <th>Name</th>
-          <th>iSyntax</th>
-          <th>Sum of 2 Integers</th>
-          <th>Staircase</th>
-          <th>Simple Array Sum</th>
-          <th>Plus Minus</th>
+          {teacherSubjects.map(({ title }, index) => (
+            <th key={index}>{title}</th>
+          ))}
         </tr>
       </thead>
       <tbody className='text-center'>
-        {userArray.map(({ name, act1, act2, act3, act4, act5 }, index) => (
+        {/* {userArray.map(({ name, act1, act2, act3, act4, act5 }, index) => (
           <tr key={index}>
             <td>{name}</td>
             {[act1, act2, act3, act4, act5].map((value, index) => {
@@ -175,6 +37,57 @@ function StudentTable() {
               return (
                 <td className={className} key={index}>
                   {value}
+                </td>
+              );
+            })}
+          </tr>
+        ))} */}
+
+        {/* HERE */}
+        {users.map(({ name, email }, index) => (
+          <tr key={index}>
+            <td>{name}</td>
+            {/* {[...Array(teacherSubjects.length).keys()].map((value, index) => { */}
+            {teacherSubjectsID.map((activityID, index) => {
+              let activityStatus = teacherAllSubmissions.filter(submission => {
+                return (
+                  submission.userEmail === email &&
+                  submission.activityID === activityID
+                  // && submission.rubricScore
+                );
+              });
+
+              let textColor = '#FFA900';
+              let statusText = 'Pending';
+
+              if (activityStatus.length === 1) {
+                textColor = '#00B74A';
+                statusText = 'Submitted';
+              }
+              if (
+                activityStatus.length === 1 &&
+                // activityStatus[0].rubricScore &&
+                activityStatus[0].rubricScore[1] === 0
+              ) {
+                textColor = '#F93154';
+                statusText = 'Late';
+              }
+
+              return (
+                <td textColor={textColor} key={index}>
+                  <a
+                    href={`/result/${activityID}?email=${email}`}
+                    style={{
+                      pointerEvents: `${
+                        statusText === 'Pending' ? 'none' : 'all'
+                      } `,
+                      textDecoration: 'none',
+                      color: `${textColor}`,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {statusText}
+                  </a>
                 </td>
               );
             })}

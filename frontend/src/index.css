@@ -112,6 +112,8 @@ pre {
   border: 1px solid grey;
   border-radius: 5px;
   padding-left: 15px;
+  overflow: auto;
+  max-height: 250px;
 }
 
 /* Loading Component */

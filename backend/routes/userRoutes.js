@@ -55,4 +55,26 @@ router.post('/', validateMiddleware(validateUser), async (req, res) => {
   res.send(user);
 });
 
+// UPDATE USER PROFILE
+router.put('/:id', validateMiddleware(validateUser), async (req, res) => {
+  const activity = await User.findByIdAndUpdate(
+    req.params.id,
+    {
+      name: req.body.name,
+      username: req.body.username,
+      email: req.body.email,
+      picture: req.body.picture,
+      role: req.body.role,
+      totalScore: req.body.totalScore,
+    },
+    { new: true }
+  );
+
+  if (!activity)
+    return res
+      .status(404)
+      .send('The activity with the given ID was not found.');
+  res.send(activity);
+});
+
 export default router;

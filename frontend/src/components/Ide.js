@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, Modal, Row, Col } from 'react-bootstrap';
 import { useAuth0 } from '@auth0/auth0-react';
 import SuggestionSection from './SuggestionSection';
@@ -10,8 +10,14 @@ import CodeMirror from '@uiw/react-codemirror';
 import { java } from '@codemirror/lang-java';
 
 import axios from 'axios';
+import moment from 'moment-timezone';
 
-function Ide({ activity, role, id }) {
+function Ide({ activity, id, userFinished, userProfile }) {
+  const ideUserFinished = userFinished.filter(submission => {
+    return submission.userEmail === userProfile.email;
+  });
+  console.log(ideUserFinished);
+
   const md = new MarkdownIt();
 
   const {
@@ -20,13 +26,14 @@ function Ide({ activity, role, id }) {
     setToggleTest,
     setToggleSuggestion,
     handleDeleteActivity,
+    postSubmission,
   } = useGlobalContext();
   const { isAuthenticated } = useAuth0();
   const [codeSuggestion, setCodeSuggestion] = useState();
   const [input, setInput] = useState('');
   const [openModal, setOpenModal] = useState(false);
   const [codeInput, setCodeInput] = useState(
-    'public class Main{\n   public static void main(String []args){\n     \n   }\n}'
+    'public class Main{\n   public static void main(String []args){\n     System.out.print("iSyntax");\n   }\n}'
   );
   const [jdoodleResult, setJdoodleResult] = useState('');
 
@@ -77,14 +84,14 @@ function Ide({ activity, role, id }) {
       });
   };
 
-  const executeCode = async () => {
+  const executeCode = async (script, stdin) => {
     const { data } = await axios.post(
       `https://cors-anywhere.herokuapp.com/https://api.jdoodle.com/v1/execute`,
       {
         clientId: process.env.REACT_APP_JDOODLE_CLIENT_ID,
         clientSecret: process.env.REACT_APP_JDOODLE_CLIENT_SECRET,
-        script: codeInput,
-        stdin: input,
+        script: script,
+        stdin: stdin,
         language: 'java',
         versionIndex: '3',
       },
@@ -103,7 +110,7 @@ function Ide({ activity, role, id }) {
     setToggleTest(true);
 
     toast
-      .promise(executeCode(codeInput), {
+      .promise(executeCode(codeInput, input), {
         pending: 'Code is compiling...',
         success: 'Code successfully compiled',
         error: "Compiler can't compile right now. Please try again",
@@ -133,6 +140,112 @@ function Ide({ activity, role, id }) {
       .catch(err => {
         console.log(err);
       });
+  };
+
+  const submitCode = async () => {
+    let testCasePassed = 0;
+    let rubricScore = [];
+    let submissionResult = [];
+    const testCases = [...activity.testCases];
+
+    for (let i = 0; i < testCases.length; i++) {
+      await executeCode(codeInput, testCases[i].input)
+        // eslint-disable-next-line no-loop-func
+        .then(({ output }) => {
+          if (output === testCases[i].output) {
+            testCasePassed++;
+            submissionResult.push({
+              output: output,
+              type: 'correct',
+            });
+          } else {
+            submissionResult.push({
+              output: output,
+              type: 'wrong',
+            });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+
+    // ACCURACY
+    if (testCases.length === testCasePassed) {
+      rubricScore[0] = Math.round(activity.items * 0.4);
+    } else if (testCasePassed === 0) {
+      rubricScore[0] = 0;
+    } else {
+      rubricScore[0] = Math.round(activity.items * 0.4 * 0.66);
+    }
+
+    // PUCTUATION
+    function getDateDiff(dueDate, dateSubmitted) {
+      return dueDate.diff(dateSubmitted, 'days');
+    }
+
+    const punctuation = getDateDiff(
+      moment(activity.dueDate),
+      moment(new Date().toISOString())
+    );
+
+    if (punctuation === 0) {
+      rubricScore[1] = Math.round(activity.items * 0.4 * 0.66);
+    } else if (testCasePassed < 0) {
+      // If negative = late
+      rubricScore[1] = 0;
+    } else {
+      rubricScore[1] = Math.round(activity.items * 0.4);
+    }
+
+    // Documentation
+    // console.log((x.match(/\/\//g) || []).length); // '//'
+    // console.log((x.match(/\/\*/g) || []).length); // '/*'
+    let commentCount = (codeInput.match(/\/\//g) || []).length; // '//'
+    commentCount += (codeInput.match(/\/\*/g) || []).length; // '/*'
+
+    if (commentCount >= 2) {
+      rubricScore[2] = Math.round(activity.items * 0.2);
+    } else if (commentCount === 0) {
+      rubricScore[2] = 0;
+    } else {
+      rubricScore[2] = Math.round(activity.items * 0.2 * 0.66);
+    }
+
+    return { testCasePassed, rubricScore, submissionResult };
+  };
+
+  const handleSubmit = e => {
+    // e.preventDefault();
+
+    toast
+      .promise(submitCode(codeInput, input), {
+        pending: 'Submitting code...',
+        success: 'Code successfully submitted',
+        error: "Code can't submit right now. Please try again",
+      })
+      .then(({ testCasePassed, rubricScore, submissionResult }) => {
+        postSubmission(
+          codeInput,
+          testCasePassed,
+          rubricScore,
+          submissionResult,
+          userProfile
+        );
+        setTimeout(function () {
+          // window.location.pathname = `/result/${id}?email=${userProfile.email}`;
+
+          // window.location.pathname = `/result/${id}`;
+          // window.location.search = `email=${userProfile.email}`;
+
+          window.location.href = `/result/${id}?email=${userProfile.email}`;
+        }, 2000);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+    return true;
   };
 
   return (
@@ -239,27 +352,46 @@ function Ide({ activity, role, id }) {
           >
             Test
           </Button>
-          {isAuthenticated && role === 'student' && (
-            <>
-              <Button
-                variant='primary'
-                className='mx-2 mb-4'
-                // onClick={() => setToggleSuggestion(true)}
-                onClick={handlePredict}
-              >
-                Analyze
-              </Button>
-              <Button
-                variant='primary'
-                className='mx-2 mb-4'
-                onClick={() => (window.location.pathname = `/result/${id}`)}
-              >
-                Submit
-              </Button>
-            </>
+          {isAuthenticated &&
+            userProfile.role === 'student' &&
+            ideUserFinished.length !== 1 && (
+              <>
+                <Button
+                  variant='primary'
+                  className='mx-2 mb-4'
+                  // onClick={() => setToggleSuggestion(true)}
+                  onClick={handlePredict}
+                >
+                  Analyze
+                </Button>
+                <Button
+                  variant='primary'
+                  className='mx-2 mb-4'
+                  onClick={handleSubmit}
+                >
+                  Submit
+                </Button>
+              </>
+            )}
+
+          {userProfile.role === 'student' && ideUserFinished.length === 1 && (
+            <Button
+              variant='primary'
+              className='mx-2 mb-4'
+              onClick={() =>
+                // (window.location.pathname = `/result/${id}?email=${userProfile.email}`)
+                // {
+                // window.location.pathname = (`/result/${id}`);
+                // window.location.search = `email=${userProfile.email}`;
+                // }
+                (window.location.href = `/result/${id}?email=${userProfile.email}`)
+              }
+            >
+              View Results
+            </Button>
           )}
 
-          {role === 'teacher' && (
+          {userProfile.role === 'teacher' && (
             <>
               <Button
                 variant='warning'
@@ -282,7 +414,7 @@ function Ide({ activity, role, id }) {
         </>
       )}
 
-      {/* {role === 'teacher' && */}
+      {/* {userProfile.role === 'teacher' && */}
       {activity.status === 'Todo' && isAuthenticated && toggleSuggestion && (
         <SuggestionSection codeSuggestion={codeSuggestion} />
       )}

@@ -32,6 +32,10 @@ const Activity = mongoose.model(
       type: String,
       required: true,
     },
+    postedByName: {
+      type: String,
+      required: true,
+    },
     instructions: {
       type: String,
       required: true,
@@ -53,6 +57,7 @@ function validateActivity(activity) {
     // To be remove
     status: Joi.string().required(),
     postedBy: Joi.string().required(),
+    postedByName: Joi.string().required(),
     instructions: Joi.string().required(),
     testCases: Joi.array().required(),
   });

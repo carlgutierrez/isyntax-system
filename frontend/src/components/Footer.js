@@ -13,7 +13,7 @@ function Footer() {
       <div className='footer-copyright text-center text-white py-3 text-muted'>
         © 2021 Copyright:
         <p className='my-1 text-center'>
-          Bonifacio JC, Gutierrez Carl, and Javier Ronnel
+          Bonifacio Jhon Stewell, Gutierrez Carl, and Javier Ronnel
         </p>
       </div>
     </footer>

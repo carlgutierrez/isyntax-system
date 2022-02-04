@@ -2,7 +2,7 @@ import React from 'react';
 import { Image } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-function UserSection({ username, name, email, picture }) {
+function UserSection({ username, name, email, picture, totalScore }) {
   return (
     <div className='col-md-7 col-lg-4 mb-5 mb-lg-0 wow fadeIn'>
       <div className='bg-dark card border-10 shadow'>
@@ -17,6 +17,9 @@ function UserSection({ username, name, email, picture }) {
         <div className='card-body p-1-9 p-xl-5'>
           <div className='mb-4'>
             <h3 className='h4 mb-0 text-center text-white'>{name}</h3>
+            <h3 className='h4 mt-2 text-center text-primary'>
+              Total Score: <span className='text-white'>{totalScore}</span>
+            </h3>
           </div>
           <ul className='list-unstyled mb-4 text-center'>
             <li className='mb-3'>

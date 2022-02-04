@@ -16,25 +16,44 @@ function DashboardPage() {
     handleSubject,
     getActivities,
     isLoading,
+    getUserSubmission,
+    userFinished,
   } = useGlobalContext();
 
   let [dashboardActivities, setDashboardActivities] = useState(activities);
 
   useEffect(() => {
     getActivities();
+    getUserSubmission();
   }, []);
 
   useEffect(() => {
     if (subject === 'All') {
       setDashboardActivities(
         activities.filter(activity => {
-          return activity.status === status;
+          // return activity.status === status;
+          if (status === 'Finished') {
+            return userFinished.includes(activity._id.toString());
+          } else {
+            return !userFinished.includes(activity._id.toString());
+          }
         })
       );
     } else {
       setDashboardActivities(
         activities.filter(activity => {
-          return activity.status === status && activity.subject === subject;
+          // return activity.status === status && activity.subject === subject;
+          if (status === 'Finished') {
+            return (
+              userFinished.includes(activity._id.toString()) &&
+              activity.subject === subject
+            );
+          } else {
+            return (
+              !userFinished.includes(activity._id.toString()) &&
+              activity.subject === subject
+            );
+          }
         })
       );
     }

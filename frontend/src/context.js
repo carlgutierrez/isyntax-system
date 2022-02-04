@@ -19,11 +19,39 @@ const AppProvider = ({ children }) => {
   const [toggleSuggestion, setToggleSuggestion] = useState(false);
   const [toggleTest, setToggleTest] = useState(false);
 
+  const [submissionResult, setSubmissionResult] = useState({});
+  const [userFinished, setUserFinished] = useState([]);
+  const [teacherSubjects, setTeacherSubjects] = useState([]);
+  const [allSubmissions, setAllSubmissions] = useState([]);
+
+  // Teacher Result Page
+  const getTeacherSubjects = async () => {
+    setIsLoading(true);
+    const { data } = await axios.get(
+      // `/api/activity/teacher/${userProfile.email}`
+      `/api/activity/teacher/${user.email}`
+    );
+    setTeacherSubjects(data);
+    setIsLoading(false);
+    return true;
+  };
+
+  const getAllSubmissions = async () => {
+    setIsLoading(true);
+    const { data } = await axios.get(`/api/submission`);
+    setAllSubmissions(data);
+    setIsLoading(false);
+    return true;
+  };
+
   // Leaderboard Page
   const getAllUsers = async () => {
     setIsLoading(true);
     const { data } = await axios.get('/api/users');
-    setUsers(data);
+    const contextUsers = data.filter(user => {
+      return user.role !== 'teacher';
+    });
+    setUsers(contextUsers);
     setIsLoading(false);
     return true;
   };
@@ -38,7 +66,18 @@ const AppProvider = ({ children }) => {
   };
   useEffect(() => {
     getActivities();
+
+    if (typeof user === 'undefined') setIsLoading(true);
   }, []);
+
+  const getUserSubmission = async () => {
+    setIsLoading(true);
+    const { data } = await axios.get(`/api/submission/${user.email}`);
+    setUserFinished(data);
+    // setActivities(data);
+    setIsLoading(false);
+    return true;
+  };
 
   // Activity Page
   const findActivity = async id => {
@@ -142,9 +181,62 @@ const AppProvider = ({ children }) => {
     // return true;
   };
 
+  // Submit Activity Page
+  const postSubmission = async (
+    code,
+    testCasePassed,
+    rubricScore,
+    submissionResult,
+    userProfile
+  ) => {
+    const { data } = await axios.post('/api/submission', {
+      userEmail: user.email,
+      activityID: activity._id,
+      code,
+      testCasePassed,
+      rubricScore,
+      submissionResult,
+    });
+
+    // HERE
+    const updatedScore =
+      userProfile.totalScore +
+      rubricScore.reduce((partialSum, a) => partialSum + a, 0);
+    await axios.put(
+      `/api/users/${userProfile._id}`,
+      // ...activity,
+      {
+        name: userProfile.name,
+        username: userProfile.username,
+        email: userProfile.email,
+        picture: userProfile.picture,
+        role: userProfile.role,
+        totalScore: updatedScore,
+      }
+    );
+
+    return true;
+  };
+
+  // Results Page
+  const getSubmission = async (activityID, email) => {
+    setIsLoading(true);
+    const { data } = await axios.get(`/api/submission/${activityID}/${email}`);
+    if (data.length !== 0) {
+      setSubmissionResult({ ...data[0] });
+      setIsLoading(false);
+      return data;
+    } else {
+      setSubmissionResult({});
+    }
+    setIsLoading(false);
+    return true;
+  };
+
   return (
     <AppContext.Provider
       value={{
+        user, //auth0
         users,
         isLoading,
         profileInfo,
@@ -156,6 +248,10 @@ const AppProvider = ({ children }) => {
         activity,
         toggleSuggestion,
         toggleTest,
+        submissionResult,
+        userFinished,
+        teacherSubjects,
+        allSubmissions,
         setToggleSuggestion,
         setToggleTest,
         findActivity,
@@ -164,11 +260,16 @@ const AppProvider = ({ children }) => {
         setActivities,
         handleStatus,
         handleSubject,
+        getTeacherSubjects,
+        getAllSubmissions,
         getAllUsers,
         getActivities,
         saveActivity,
         handleDeleteActivity,
         updateActivity,
+        postSubmission,
+        getSubmission,
+        getUserSubmission,
       }}
     >
       {children}

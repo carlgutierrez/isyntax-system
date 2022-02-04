@@ -24,6 +24,7 @@ function CreatePage() {
     subject: '',
     status: 'Todo',
     postedBy: '',
+    postedByName: '',
     instructions: '',
   });
   const md = new MarkdownIt({ breaks: true });
@@ -74,7 +75,8 @@ function CreatePage() {
                   setCreateActivity({
                     ...createActivity,
                     title: e.target.value,
-                    postedBy: userProfile.name,
+                    postedBy: userProfile.email,
+                    postedByName: userProfile.name,
                   })
                 }
               />
@@ -86,12 +88,12 @@ function CreatePage() {
           {/* ITEMS */}
           <Col md>
             <Form.Group className='mb-3 text-white' controlId='formBasicItems'>
-              <Form.Label>Items</Form.Label>
+              <Form.Label>Points</Form.Label>
               <Form.Control
                 min='1'
                 required
                 type='number'
-                placeholder='Items'
+                placeholder='Points'
                 onChange={e =>
                   setCreateActivity({
                     ...createActivity,

@@ -37,6 +37,10 @@ function validateUser(user) {
     name: Joi.string().required(),
     email: Joi.string().required().email(),
     picture: Joi.string().required(),
+
+    username: Joi.string(),
+    role: Joi.string(),
+    totalScore: Joi.number(),
   });
   return schema.validate(user);
 }
