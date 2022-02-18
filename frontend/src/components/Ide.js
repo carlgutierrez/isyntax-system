@@ -39,7 +39,7 @@ function Ide({ activity, id, userFinished, userProfile }) {
 
   const predictCode = async () => {
     const { data } = await axios.post(
-      `https://cors-anywhere.herokuapp.com/http://18.140.65.58:8080/predict`,
+      `https://cors-anywhere.herokuapp.com/http://52.221.234.177:8080/predict`,
       {
         codeInput: codeInput,
       },

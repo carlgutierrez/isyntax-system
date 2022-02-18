@@ -89,9 +89,17 @@ function DashboardPage() {
         {/* <CardGroup style={{ maxWidth: '100%' }}> */}
         <CardGroup className='justify-content-center'>
           <Row xs={1} md={3} className='g-4' style={{ width: '100%' }}>
-            {userActivities.map((activity, index) => (
-              <CardComponent {...activity} key={index} />
-            ))}
+            {userProfile.role === 'student'
+              ? userActivities.map((activity, index) => (
+                  <CardComponent {...activity} key={index} />
+                ))
+              : activities
+                  .filter(activity => {
+                    return activity.postedBy === userProfile.email;
+                  })
+                  .map((activity, index) => (
+                    <CardComponent {...activity} key={index} />
+                  ))}
           </Row>
         </CardGroup>
 

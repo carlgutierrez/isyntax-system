@@ -262,7 +262,12 @@ const AppProvider = ({ children }) => {
     for (let i = 0; i < data.length; i++) {
       allSubmissionsArray.push(data[i].userEmail);
     }
-    if (!allSubmissionsArray.includes(email)) {
+
+    let activityCount = 0;
+    for (let i = 0; i < allSubmissionsArray.length; i++) {
+      if (allSubmissionsArray[i] === email) activityCount++;
+    }
+    if (activityCount === 1) {
       const userBadgesQuery = await axios.get(`/api/badge/${email}`);
       if (!userBadgesQuery.data.includes('completedFirstActivity')) {
         const newBadges = [...userBadgesQuery.data, 'completedFirstActivity'];
@@ -277,12 +282,7 @@ const AppProvider = ({ children }) => {
     }
 
     // completedThreeActivities
-    let activityCount = 0;
-    for (let i = 0; i < allSubmissionsArray.length; i++) {
-      if (allSubmissionsArray[i] === email) activityCount++;
-    }
-    console.log('allSubmissionsArray', allSubmissionsArray);
-    console.log('activityCount', activityCount);
+
     if (activityCount === 3) {
       const userBadgesQuery = await axios.get(`/api/badge/${email}`);
       if (!userBadgesQuery.data.includes('completedThreeActivities')) {
